@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AnesthesiaHub
 
-## Getting Started
+A modern, high-end clinical companion for anesthesiology trainees and attendings:
 
-First, run the development server:
+- **Drug database** — induction agents, paralytics, opioids, vasopressors, local anesthetics, reversal agents, antiemetics, benzodiazepines
+- **Bedside calculators** — BMI/BSA, IBW/ABW, age-adjusted MAC, pediatric ETT & LMA sizing, 4-2-1 maintenance fluids, allowable blood loss, pediatric emergency doses, Apfel PONV, RCRI
+- **Subspecialty primers** — cardiac, neuro, OB, pediatric, regional, critical care, pain, ambulatory, trauma, transplant
+- **Question bank** — 30+ board-style MCQs with detailed explanations and per-device progress tracking
+- **AI Assistant** — Claude-powered chat for brainstorming anesthetic plans
+
+> ⚠️ Educational tool only. Verify every dose and recommendation against primary sources and institutional protocols before applying to a patient.
+
+## Getting started
 
 ```bash
+npm install
+cp .env.local.example .env.local
+# add your Anthropic API key
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+App will be available at `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Build
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm start
+```
 
-## Learn More
+## Stack
 
-To learn more about Next.js, take a look at the following resources:
+- Next.js 16 (App Router) + React 19
+- TypeScript
+- Tailwind CSS v4
+- `@anthropic-ai/sdk` for AI streaming
+- `lucide-react` icons
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Customizing content
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Drugs → `src/lib/drugs.ts`
+- Calculators registry → `src/lib/calculators.ts` (components in `src/components/calculators/`)
+- Subspecialties → `src/lib/subspecialties.ts`
+- Questions → `src/lib/questions.ts`
+- AI system prompt → `src/app/api/chat/route.ts`
 
-## Deploy on Vercel
+## License
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT — but the medical content is provided as-is and without warranty. See disclaimer in the app.
