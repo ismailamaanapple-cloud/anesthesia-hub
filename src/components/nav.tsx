@@ -10,6 +10,7 @@ import {
   BookOpen,
   Brain,
   GraduationCap,
+  BookMarked,
   Menu,
   X,
   Moon,
@@ -19,11 +20,12 @@ import { cn } from "@/lib/utils";
 import { useTheme } from "@/components/theme-provider";
 
 const links = [
+  { href: "/tutorials", label: "Tutorials", icon: BookMarked },
   { href: "/drugs", label: "Drugs", icon: Pill },
   { href: "/calculators", label: "Calculators", icon: Calculator },
   { href: "/subspecialties", label: "Subspecialties", icon: BookOpen },
-  { href: "/question-bank", label: "Question Bank", icon: GraduationCap },
-  { href: "/ai-assistant", label: "AI Assistant", icon: Brain },
+  { href: "/question-bank", label: "Q-Bank", icon: GraduationCap },
+  { href: "/ai-assistant", label: "AI", icon: Brain },
 ];
 
 export function Nav() {

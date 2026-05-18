@@ -9,7 +9,6 @@ import {
   GraduationCap,
   Sparkles,
   HeartPulse,
-  ShieldCheck,
   Stethoscope,
   Syringe,
   Baby,
@@ -17,6 +16,7 @@ import {
   Zap,
   Siren,
   Crosshair,
+  BookMarked,
 } from "lucide-react";
 import { subspecialties } from "@/lib/subspecialties";
 
@@ -71,7 +71,8 @@ export default function Home() {
               </Link>
             </div>
 
-            <div className="mt-10 grid grid-cols-3 gap-6 max-w-md">
+            <div className="mt-10 grid grid-cols-4 gap-6 max-w-xl">
+              <Stat label="Chapters" value="26" />
               <Stat label="Drugs" value="25+" />
               <Stat label="Calculators" value="9" />
               <Stat label="MCQs" value="30+" />
@@ -120,11 +121,18 @@ export default function Home() {
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 -mt-16 relative z-10">
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
           <FeatureCard
+            href="/tutorials"
+            icon={BookMarked}
+            title="CA-1 Tutorial Library"
+            description="26 structured chapters covering everything from standard monitors to malignant hyperthermia — adapted from the Stanford CA-1 textbook."
+            accent="from-primary to-accent"
+          />
+          <FeatureCard
             href="/drugs"
             icon={Pill}
             title="Drug Database"
             description="Doses, onset, duration, metabolism, and pearls for the agents you actually use."
-            accent="from-primary to-accent"
+            accent="from-violet-500 to-purple-500"
           />
           <FeatureCard
             href="/calculators"
@@ -153,13 +161,6 @@ export default function Home() {
             title="Question Bank"
             description="USMLE/ITE-style MCQs with detailed explanations and progress tracking."
             accent="from-amber-500 to-orange-500"
-          />
-          <FeatureCard
-            href="/drugs"
-            icon={ShieldCheck}
-            title="Safety-First"
-            description="Citations, contraindications, and red flags surfaced inline — not buried."
-            accent="from-sky-500 to-indigo-500"
           />
         </div>
       </section>
