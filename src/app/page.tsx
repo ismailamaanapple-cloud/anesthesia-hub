@@ -96,8 +96,8 @@ export default function Home() {
             <div className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-6 max-w-2xl">
               <Stat label="Chapters" value="26" />
               <Stat label="Drugs" value="27" />
-              <Stat label="Calculators" value="9" />
-              <Stat label="Emergencies" value="7" />
+              <Stat label="Calculators" value="14" />
+              <Stat label="MCQs" value="235" />
             </div>
           </div>
 
@@ -218,6 +218,14 @@ export default function Home() {
             description="Crisis cards for MH, LAST, anaphylaxis, CICV, massive transfusion, laryngospasm, and code blue — built for the head of the bed."
             accent="from-red-500 to-orange-500"
             badge="7 cards"
+          />
+          <FeatureCard
+            href="/question-bank"
+            icon={GraduationCap}
+            title="Question Bank"
+            description="235 board-style MCQs across 12 categories with detailed explanations. Quiz mode, Review mode, status filters, bookmarks."
+            accent="from-amber-500 to-orange-500"
+            badge="235 MCQs"
           />
         </div>
       </section>
