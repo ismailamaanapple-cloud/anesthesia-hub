@@ -33,6 +33,7 @@ export function RcriCalc() {
       title="Revised Cardiac Risk Index (RCRI / Lee)"
       description="Predicts perioperative risk of major cardiac complications in non-cardiac surgery."
       formula="One point per criterion. ≥2 points often triggers further cardiac workup."
+      references={["rcri"]}
     >
       <div className="space-y-2">
         {criteria.map((c) => (

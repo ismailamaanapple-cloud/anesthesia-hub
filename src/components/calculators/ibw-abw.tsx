@@ -33,6 +33,7 @@ export function IbwAbwCalc() {
       title="Ideal & Adjusted Body Weight"
       description="Devine ideal body weight; adjusted body weight (ABW) for dosing in obesity; Janmahasatian lean body weight."
       formula="IBW (kg) = 50 [M] or 45.5 [F] + 2.3 × inches over 60   ·   ABW = IBW + 0.4 × (actual − IBW)"
+      references={["devine", "janmahasatian"]}
     >
       <div className="grid sm:grid-cols-3 gap-4">
         <Select

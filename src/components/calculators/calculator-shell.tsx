@@ -1,17 +1,26 @@
+"use client";
+
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { ReferenceList } from "@/components/reference-list";
+import { BookmarkButton } from "@/components/bookmark-button";
 
 export function CalculatorShell({
   title,
   description,
   formula,
+  references,
   children,
 }: {
   title: string;
   description: string;
   formula?: string;
+  references?: string[];
   children: React.ReactNode;
 }) {
+  const path = usePathname();
+  const slug = path.split("/").pop() || "";
   return (
     <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-10">
       <Link
@@ -20,20 +29,34 @@ export function CalculatorShell({
       >
         <ArrowLeft className="h-4 w-4" /> Calculators
       </Link>
-      <div className="mt-5">
-        <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight">
-          {title}
-        </h1>
-        <p className="mt-2 text-muted-foreground text-sm leading-relaxed">
-          {description}
-        </p>
-        {formula && (
-          <div className="mt-3 inline-block rounded-lg border border-border bg-muted/40 px-3 py-1.5 font-mono text-xs text-muted-foreground">
-            {formula}
-          </div>
+      <div className="mt-5 flex items-start justify-between gap-3">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight">
+            {title}
+          </h1>
+          <p className="mt-2 text-muted-foreground text-sm leading-relaxed">
+            {description}
+          </p>
+          {formula && (
+            <div className="mt-3 inline-block rounded-lg border border-border bg-muted/40 px-3 py-1.5 font-mono text-xs text-muted-foreground">
+              {formula}
+            </div>
+          )}
+        </div>
+        {slug && (
+          <BookmarkButton
+            kind="calculator"
+            slug={slug}
+            title={title}
+            subtitle={description}
+            href={`/calculators/${slug}`}
+          />
         )}
       </div>
       <div className="mt-6">{children}</div>
+      {references && references.length > 0 && (
+        <ReferenceList ids={references} />
+      )}
     </div>
   );
 }

@@ -156,6 +156,13 @@ export default function Home() {
             accent="from-emerald-500 to-cyan-500"
           />
           <FeatureCard
+            href="/emergency"
+            icon={Siren}
+            title="Emergency Manual"
+            description="Crisis cards for MH, LAST, anaphylaxis, CICV, massive transfusion, laryngospasm, and code blue — built for the head of the bed."
+            accent="from-red-500 to-orange-500"
+          />
+          <FeatureCard
             href="/question-bank"
             icon={GraduationCap}
             title="Question Bank"

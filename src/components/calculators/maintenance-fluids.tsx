@@ -22,6 +22,7 @@ export function MaintenanceFluidsCalc() {
       title="Maintenance Fluids (4-2-1)"
       description="Holliday-Segar hourly maintenance fluid rate."
       formula="4 mL/kg/h (first 10 kg) + 2 mL/kg/h (next 10 kg) + 1 mL/kg/h (>20 kg)"
+      references={["hollidaySegar"]}
     >
       <div className="grid sm:grid-cols-2 gap-4">
         <Field label="Weight" unit="kg" value={w} onChange={setW} />

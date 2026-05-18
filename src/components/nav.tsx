@@ -11,6 +11,7 @@ import {
   Brain,
   GraduationCap,
   BookMarked,
+  Siren,
   Menu,
   X,
   Moon,
@@ -22,8 +23,9 @@ import { useTheme } from "@/components/theme-provider";
 const links = [
   { href: "/tutorials", label: "Tutorials", icon: BookMarked },
   { href: "/drugs", label: "Drugs", icon: Pill },
-  { href: "/calculators", label: "Calculators", icon: Calculator },
-  { href: "/subspecialties", label: "Subspecialties", icon: BookOpen },
+  { href: "/calculators", label: "Calcs", icon: Calculator },
+  { href: "/emergency", label: "Emergency", icon: Siren },
+  { href: "/subspecialties", label: "Subs", icon: BookOpen },
   { href: "/question-bank", label: "Q-Bank", icon: GraduationCap },
   { href: "/ai-assistant", label: "AI", icon: Brain },
 ];
@@ -74,6 +76,27 @@ export function Nav() {
           </nav>
 
           <div className="flex items-center gap-2">
+            <button
+              onClick={() => {
+                if (typeof window !== "undefined") {
+                  window.dispatchEvent(
+                    new KeyboardEvent("keydown", {
+                      key: "k",
+                      metaKey: true,
+                      bubbles: true,
+                    })
+                  );
+                }
+              }}
+              aria-label="Search"
+              title="Search (⌘K)"
+              className="hidden md:inline-flex items-center gap-2 h-9 px-3 rounded-lg border border-border bg-muted/40 hover:bg-muted text-xs text-muted-foreground"
+            >
+              <span>Search</span>
+              <kbd className="text-[10px] font-mono px-1 py-0.5 rounded border border-border bg-background">
+                ⌘K
+              </kbd>
+            </button>
             <button
               onClick={toggle}
               aria-label="Toggle theme"

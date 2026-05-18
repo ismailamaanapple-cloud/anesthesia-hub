@@ -34,6 +34,7 @@ export function EttLmaCalc() {
       title="Pediatric ETT & LMA Sizing"
       description="Endotracheal tube size and depth (Cole) and LMA size by weight."
       formula="Cuffed ETT = age/4 + 3.5   ·   Uncuffed ETT = age/4 + 4   ·   Depth (cm) = age/2 + 12"
+      references={["miller", "stanfordCa1"]}
     >
       <div className="grid sm:grid-cols-2 gap-4">
         <Field label="Age" unit="years" value={age} onChange={setAge} />

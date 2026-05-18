@@ -45,6 +45,7 @@ export function AblCalc() {
       title="Allowable Blood Loss"
       description="Estimated allowable blood loss before transfusion threshold."
       formula="ABL = EBV × (Hct_start − Hct_target) / Hct_avg"
+      references={["miller", "asaTransfusion"]}
     >
       <div className="grid sm:grid-cols-2 gap-4">
         <Select

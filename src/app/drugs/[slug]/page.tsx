@@ -2,6 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Pill, AlertTriangle, ShieldAlert, Sparkles, Clock, Activity, FlaskConical, Stethoscope } from "lucide-react";
 import { drugs, getDrug } from "@/lib/drugs";
+import { ReferenceList } from "@/components/reference-list";
+import { BookmarkButton } from "@/components/bookmark-button";
 
 export function generateStaticParams() {
   return drugs.map((d) => ({ slug: d.slug }));
@@ -33,17 +35,28 @@ export default async function DrugPage({
             <Pill className="h-6 w-6" />
           </span>
           <div className="flex-1">
-            <div className="text-[10px] uppercase tracking-wider text-primary font-medium">
-              {drug.category} · {drug.class}
-            </div>
-            <h1 className="mt-1 text-3xl font-semibold tracking-tight">
-              {drug.name}
-            </h1>
-            {drug.brands && (
-              <div className="text-sm text-muted-foreground">
-                {drug.brands.join(", ")}
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <div className="text-[10px] uppercase tracking-wider text-primary font-medium">
+                  {drug.category} · {drug.class}
+                </div>
+                <h1 className="mt-1 text-3xl font-semibold tracking-tight">
+                  {drug.name}
+                </h1>
+                {drug.brands && (
+                  <div className="text-sm text-muted-foreground">
+                    {drug.brands.join(", ")}
+                  </div>
+                )}
               </div>
-            )}
+              <BookmarkButton
+                kind="drug"
+                slug={drug.slug}
+                title={drug.name}
+                subtitle={drug.category}
+                href={`/drugs/${drug.slug}`}
+              />
+            </div>
             <p className="mt-4 text-sm text-muted-foreground leading-relaxed max-w-3xl">
               <span className="font-medium text-foreground">Mechanism:</span>{" "}
               {drug.mechanism}
@@ -147,6 +160,10 @@ export default async function DrugPage({
           ))}
         </div>
       </Section>
+
+      {drug.references && drug.references.length > 0 && (
+        <ReferenceList ids={drug.references} />
+      )}
     </div>
   );
 }

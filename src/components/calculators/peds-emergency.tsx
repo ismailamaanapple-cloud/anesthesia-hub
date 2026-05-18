@@ -30,6 +30,7 @@ export function PedsEmergencyCalc() {
       title="Pediatric Emergency Doses"
       description="Weight-based, ready-to-use doses for resuscitation, RSI, and code situations."
       formula="Always confirm with a second clinician before administration."
+      references={["acls", "miller", "stanfordEM"]}
     >
       <div className="grid sm:grid-cols-2 gap-4">
         <Field label="Weight" unit="kg" value={w} onChange={setW} />

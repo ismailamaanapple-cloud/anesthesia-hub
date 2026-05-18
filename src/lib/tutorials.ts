@@ -26,6 +26,8 @@ export type Tutorial = {
   readMinutes: number;
   keyPoints: string[];
   sections: TutorialSection[];
+  /** Reference IDs from src/lib/references.ts */
+  references: string[];
 };
 
 export const tutorials: Tutorial[] = [
@@ -128,6 +130,7 @@ The R ratio (AC/DC at 660 ÷ AC/DC at 940) maps to SpO₂. A 1:1 ratio = SpO₂ 
 - **Precordial / esophageal stethoscope:** classic teaching tool, still useful in peds.`,
       },
     ],
+    references: ["asaMonitors", "barash", "miller", "morganMikhail", "stanfordCa1"],
   },
 
   // ---------------------------------------------------------------
@@ -236,6 +239,7 @@ Net: **agents with low blood solubility (desflurane, sevoflurane, N₂O) reach t
 - **PONV:** all volatiles are emetogenic.`,
       },
     ],
+    references: ["miller", "stoelting", "barash", "morganMikhail", "stanfordCa1"],
   },
 
   // ---------------------------------------------------------------
@@ -310,6 +314,7 @@ Net: **agents with low blood solubility (desflurane, sevoflurane, N₂O) reach t
 **After an episode:** acknowledge, apologize, document, refer for early psychological counseling (40–60% benefit).`,
       },
     ],
+    references: ["mapleson", "asaAwareness", "miller", "stoelting", "stanfordCa1"],
   },
 
   // ---------------------------------------------------------------
@@ -416,6 +421,7 @@ Net: **agents with low blood solubility (desflurane, sevoflurane, N₂O) reach t
 - **Methohexital** still used for ECT (lowers seizure threshold less than other agents).`,
       },
     ],
+    references: ["stoelting", "miller", "barash", "morganMikhail", "stanfordCa1"],
   },
 
   // ---------------------------------------------------------------
@@ -526,6 +532,7 @@ Opioids alone are **hemodynamically stable**; in combination with volatiles or p
 - **Anticipate respiratory depression in PACU** when redosing after a case.`,
       },
     ],
+    references: ["stoelting", "miller", "barash", "stanfordCa1"],
   },
 
   // ---------------------------------------------------------------
@@ -637,6 +644,7 @@ Opioids alone are **hemodynamically stable**; in combination with volatiles or p
 | Milrinone | PDE-3 | 50 mcg/kg load | 0.125–0.5 mcg/kg/min | Inodilator; pulmonary vasodilator |`,
       },
     ],
+    references: ["miller", "stoelting", "barash", "soapHypotension", "stanfordCa1"],
   },
 
   // ---------------------------------------------------------------
@@ -773,6 +781,7 @@ vocal cords > diaphragm > corrugator supercilii > orbicularis oculi > geniohyoid
 | Re-dose of roc after 16 mg/kg sugammadex | Wait 24 h |`,
       },
     ],
+    references: ["stoelting", "miller", "barash", "stanfordCa1"],
   },
 
   // ---------------------------------------------------------------
@@ -896,6 +905,7 @@ Mallampati III–IV, Males, Beard, OSA / upper airway surgery, Radiation changes
 **Confirm:** EtCO₂, bilateral breath sounds, no subcutaneous emphysema with positive-pressure ventilation.`,
       },
     ],
+    references: ["asaDifficultAirway", "proact", "miller", "stanfordEM", "stanfordCa1"],
   },
 
   // ---------------------------------------------------------------
@@ -1013,6 +1023,7 @@ Mallampati III–IV, Males, Beard, OSA / upper airway surgery, Radiation changes
 **Surgical losses:** match estimated blood loss 3:1 with crystalloid or 1:1 with colloid/blood (depending on hemoglobin target).`,
       },
     ],
+    references: ["hollidaySegar", "miller", "barash", "stoelting", "stanfordCa1"],
   },
 
   // ---------------------------------------------------------------
@@ -1160,6 +1171,7 @@ Volume = (Hct_desired − Hct_current) × EBV / Hct_transfused_blood
 **Hyperkalemia** — old blood, irradiated units, rapid transfusion in neonates. Check K, treat hyperkalemia per protocol.`,
       },
     ],
+    references: ["asaTransfusion", "prismMassiveTx", "trali", "miller", "stanfordCa1"],
   },
 
   // ---------------------------------------------------------------
@@ -1289,6 +1301,7 @@ Normal A-a:
 | ↓ EtCO₂ with HD instability | PE, severe ↓ CO, air embolism |`,
       },
     ],
+    references: ["gabaCrisis", "miller", "barash", "stanfordEM", "stanfordCa1"],
   },
 
   // ---------------------------------------------------------------
@@ -1438,6 +1451,7 @@ Consider cancelling elective surgery if K < 3–3.5 (chronicity matters). Reduce
 | ↑ Mg | prolonged | widened | — | peaked |`,
       },
     ],
+    references: ["barash", "miller", "morganMikhail", "stanfordCa1"],
   },
 
   // ---------------------------------------------------------------
@@ -1545,6 +1559,7 @@ Consider cancelling elective surgery if K < 3–3.5 (chronicity matters). Reduce
   - Alternatives: dexmedetomidine, clonidine, tramadol, magnesium`,
       },
     ],
+    references: ["miller", "barash", "stoelting", "stanfordCa1"],
   },
 
   // ---------------------------------------------------------------
@@ -1644,6 +1659,7 @@ Consider cancelling elective surgery if K < 3–3.5 (chronicity matters). Reduce
 **Propofol** sub-hypnotic doses (10–20 mg IV PACU rescue) or background TIVA.`,
       },
     ],
+    references: ["apfel", "apfelImpact", "miller", "stanfordCa1"],
   },
 
   // ---------------------------------------------------------------
@@ -1750,6 +1766,7 @@ Consider cancelling elective surgery if K < 3–3.5 (chronicity matters). Reduce
 **Workup:** check TOF, ABG, glucose, lytes, temperature; consider reversal trials (naloxone, flumazenil); if persistent → neuro exam, CT head.`,
       },
     ],
+    references: ["asaDifficultAirway", "miller", "barash", "stanfordCa1"],
   },
 
   // ---------------------------------------------------------------
@@ -1877,6 +1894,7 @@ Consider cancelling elective surgery if K < 3–3.5 (chronicity matters). Reduce
 6. Monitor for ARDS; CXR may lag 24 h`,
       },
     ],
+    references: ["asaNpo", "gabaCrisis", "miller", "stanfordEM", "stanfordCa1"],
   },
 
   // ---------------------------------------------------------------
@@ -1977,6 +1995,7 @@ Consider cancelling elective surgery if K < 3–3.5 (chronicity matters). Reduce
 - Identifying easily accessible AMBU and backup cylinder`,
       },
     ],
+    references: ["apsf", "miller", "barash", "stanfordCa1"],
   },
 
   // ---------------------------------------------------------------
@@ -2081,6 +2100,7 @@ Can have variable presentations with some or all of these.`,
 **Document and notify** the patient; MedicAlert; communicate findings to PCP and pharmacy.`,
       },
     ],
+    references: ["gabaCrisis", "miller", "stoelting", "stanfordEM", "stanfordCa1"],
   },
 
   // ---------------------------------------------------------------
@@ -2203,6 +2223,7 @@ Bradycardia → ventricular dysrhythmias → ↓ contractility → CV collapse (
 Continue monitoring at least 4–6 h after resolution.`,
       },
     ],
+    references: ["asraLast", "weinbergLipid", "stoelting", "miller", "stanfordCa1"],
   },
 
   // ---------------------------------------------------------------
@@ -2328,6 +2349,7 @@ Continue monitoring at least 4–6 h after resolution.`,
 - Acceptable for outpatient surgery if uneventful 4–6 h observation post-op`,
       },
     ],
+    references: ["mhaus", "miller", "stoelting", "stanfordEM", "stanfordCa1"],
   },
 
   // ---------------------------------------------------------------
@@ -2416,6 +2438,7 @@ Continue monitoring at least 4–6 h after resolution.`,
 - Contact device representative or pacemaker service when in doubt`,
       },
     ],
+    references: ["asaNpo", "jaffe", "miller", "stanfordCa1"],
   },
 
   // ---------------------------------------------------------------
@@ -2498,6 +2521,7 @@ Continue monitoring at least 4–6 h after resolution.`,
 - Difficult airway cart known location`,
       },
     ],
+    references: ["asaMonitors", "miller", "stanfordCa1"],
   },
 
   // ---------------------------------------------------------------
@@ -2601,6 +2625,7 @@ Continue monitoring at least 4–6 h after resolution.`,
 - When unclear → vancomycin or clindamycin per institutional protocol.`,
       },
     ],
+    references: ["bratzler", "classenAbx", "shcAbx", "stanfordCa1"],
   },
 
   // ---------------------------------------------------------------
@@ -2653,6 +2678,7 @@ Continue monitoring at least 4–6 h after resolution.`,
 Always remember: AI is a brainstorming partner, not a substitute for clinical judgment or your attending.`,
       },
     ],
+    references: ["stanfordCa1", "stanfordEM"],
   },
 
   // ---------------------------------------------------------------
@@ -2722,6 +2748,7 @@ Always remember: AI is a brainstorming partner, not a substitute for clinical ju
 Most important: **build the habit early**. Daily 30 min beats one Saturday cram.`,
       },
     ],
+    references: ["stanfordCa1"],
   },
 
   // ---------------------------------------------------------------
@@ -2915,6 +2942,7 @@ Most important: **build the habit early**. Daily 30 min beats one Saturday cram.
 - **O₂ ER = VO₂ / DO₂** (normal ~25%)`,
       },
     ],
+    references: ["asraAnticoag", "miller", "barash", "stoelting", "jaffe", "stanfordCa1"],
   },
 ];
 

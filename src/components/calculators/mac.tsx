@@ -38,6 +38,7 @@ export function MacCalc() {
       title="MAC (Age-Adjusted)"
       description="Minimum Alveolar Concentration adjusted to patient age via the Mapleson equation."
       formula="MAC(age) = MAC₄₀ × 10^(−0.00269 × (age − 40))"
+      references={["mapleson", "miller"]}
     >
       <div className="grid sm:grid-cols-2 gap-4">
         <Select

@@ -32,6 +32,8 @@ import {
 } from "lucide-react";
 import { tutorials, getTutorial } from "@/lib/tutorials";
 import { Markdown } from "@/components/markdown";
+import { ReferenceList } from "@/components/reference-list";
+import { BookmarkButton } from "@/components/bookmark-button";
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Activity,
@@ -99,16 +101,27 @@ export default async function TutorialPage({
             <Icon className="h-6 w-6" />
           </span>
           <div className="flex-1">
-            <div className="text-[10px] uppercase tracking-[0.18em] text-primary font-medium">
-              Chapter {t.number} · {t.category}
-            </div>
-            <h1 className="mt-1 text-3xl sm:text-4xl font-semibold tracking-tight">
-              {t.title}
-            </h1>
-            <p className="mt-2 text-muted-foreground">{t.tagline}</p>
-            <div className="mt-4 flex items-center gap-2 text-xs text-muted-foreground">
-              <Clock className="h-3.5 w-3.5" />
-              {t.readMinutes} min read
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <div className="text-[10px] uppercase tracking-[0.18em] text-primary font-medium">
+                  Chapter {t.number} · {t.category}
+                </div>
+                <h1 className="mt-1 text-3xl sm:text-4xl font-semibold tracking-tight">
+                  {t.title}
+                </h1>
+                <p className="mt-2 text-muted-foreground">{t.tagline}</p>
+                <div className="mt-4 flex items-center gap-2 text-xs text-muted-foreground">
+                  <Clock className="h-3.5 w-3.5" />
+                  {t.readMinutes} min read
+                </div>
+              </div>
+              <BookmarkButton
+                kind="tutorial"
+                slug={t.slug}
+                title={t.title}
+                subtitle={`Ch ${t.number} · ${t.category}`}
+                href={`/tutorials/${t.slug}`}
+              />
             </div>
           </div>
         </div>
@@ -155,6 +168,9 @@ export default async function TutorialPage({
           </section>
         ))}
       </article>
+
+      {/* References */}
+      <ReferenceList ids={t.references} />
 
       {/* Section TOC (mobile-friendly, anchors) */}
       <div className="mt-10 rounded-2xl border border-border bg-muted/40 p-5">

@@ -32,6 +32,7 @@ export function ApfelCalc() {
       title="Apfel PONV Score"
       description="Estimate post-operative nausea & vomiting risk and choose prophylaxis intensity."
       formula="Score = number of risk factors present (0–4)"
+      references={["apfel", "apfelImpact"]}
     >
       <div className="space-y-2">
         {factors.map((f) => (

@@ -16,6 +16,8 @@ import {
   Pill,
 } from "lucide-react";
 import { subspecialties, getSubspecialty } from "@/lib/subspecialties";
+import { ReferenceList } from "@/components/reference-list";
+import { BookmarkButton } from "@/components/bookmark-button";
 
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Heart,
@@ -63,8 +65,19 @@ export default async function SubspecialtyPage({
             <Icon className="h-6 w-6" />
           </span>
           <div className="flex-1">
-            <h1 className="text-3xl font-semibold tracking-tight">{s.name}</h1>
-            <p className="mt-1 text-muted-foreground">{s.tagline}</p>
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <h1 className="text-3xl font-semibold tracking-tight">{s.name}</h1>
+                <p className="mt-1 text-muted-foreground">{s.tagline}</p>
+              </div>
+              <BookmarkButton
+                kind="subspecialty"
+                slug={s.slug}
+                title={s.name}
+                subtitle={s.tagline}
+                href={`/subspecialties/${s.slug}`}
+              />
+            </div>
             <p className="mt-5 text-sm leading-relaxed text-foreground/85 max-w-3xl">
               {s.overview}
             </p>
@@ -151,6 +164,10 @@ export default async function SubspecialtyPage({
           ))}
         </div>
       </section>
+
+      {s.references && s.references.length > 0 && (
+        <ReferenceList ids={s.references} />
+      )}
     </div>
   );
 }

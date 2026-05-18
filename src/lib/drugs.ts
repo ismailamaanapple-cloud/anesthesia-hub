@@ -27,6 +27,8 @@ export type Drug = {
   sideEffects: string[];
   pearls: string[];
   monitoring?: string;
+  /** Reference IDs from src/lib/references.ts */
+  references?: string[];
 };
 
 export const drugs: Drug[] = [
@@ -57,6 +59,7 @@ export const drugs: Drug[] = [
       "Add 20–40 mg lidocaine to syringe to reduce injection pain.",
       "Antiemetic at sub-hypnotic doses (10–20 mg).",
     ],
+    references: ["stoelting", "miller", "barash", "stanfordCa1"],
   },
   {
     slug: "etomidate",
@@ -82,6 +85,7 @@ export const drugs: Drug[] = [
       "First-line induction for the hemodynamically tenuous patient.",
       "Single-dose adrenal suppression rarely clinically significant — but consider in septic shock.",
     ],
+    references: ["stoelting", "miller", "barash", "stanfordCa1"],
   },
   {
     slug: "ketamine",
@@ -118,6 +122,7 @@ export const drugs: Drug[] = [
       "Bronchodilator — first choice for severe asthma induction.",
       "Co-administer midazolam or low-dose propofol to blunt emergence reactions.",
     ],
+    references: ["stoelting", "miller", "barash", "stanfordCa1"],
   },
   {
     slug: "midazolam",
@@ -138,6 +143,7 @@ export const drugs: Drug[] = [
       "Reverse with flumazenil 0.2 mg IV q1 min (max 1 mg) — caution in chronic users.",
       "Powerful anterograde amnesia even at low doses.",
     ],
+    references: ["stoelting", "miller", "barash", "stanfordCa1"],
   },
   {
     slug: "dexmedetomidine",
@@ -158,6 +164,7 @@ export const drugs: Drug[] = [
       "Sedation that preserves respiratory drive — ideal for awake intubation.",
       "Skip the load in elderly / cardiac patients to avoid hemodynamic swings.",
     ],
+    references: ["stoelting", "miller", "barash", "stanfordCa1"],
   },
   // ---------- PARALYTICS ----------
   {
@@ -192,6 +199,7 @@ export const drugs: Drug[] = [
       "Pretreat peds with atropine 0.02 mg/kg to prevent bradycardia.",
       "Prolonged block (>1 h) → suspect pseudocholinesterase deficiency.",
     ],
+    references: ["stoelting", "miller", "barash", "mhaus", "stanfordCa1"],
   },
   {
     slug: "rocuronium",
@@ -212,6 +220,7 @@ export const drugs: Drug[] = [
       "RSI alternative to sux when sux is contraindicated — pair with sugammadex availability.",
       "Sugammadex 16 mg/kg reverses even profound block.",
     ],
+    references: ["stoelting", "miller", "barash", "stanfordCa1"],
   },
   {
     slug: "vecuronium",
@@ -229,6 +238,7 @@ export const drugs: Drug[] = [
     contraindications: ["Hypersensitivity"],
     sideEffects: ["Prolonged block in hepatic/renal failure", "Minimal CV effects"],
     pearls: ["Hemodynamically neutral — useful in cardiac cases.", "Reversible with sugammadex."],
+    references: ["stoelting", "miller", "barash", "stanfordCa1"],
   },
   {
     slug: "cisatracurium",
@@ -249,6 +259,7 @@ export const drugs: Drug[] = [
       "Drug of choice when organ failure precludes hepatic / renal clearance.",
       "NOT reversed by sugammadex (benzylisoquinolinium).",
     ],
+    references: ["stoelting", "miller", "barash", "stanfordCa1"],
   },
   // ---------- OPIOIDS ----------
   {
@@ -270,6 +281,7 @@ export const drugs: Drug[] = [
       "Rigidity from rapid bolus → ventilation impossible; treat with NMBA + naloxone.",
       "Short single-dose action belies long context-sensitive half-time on infusion.",
     ],
+    references: ["stoelting", "miller", "barash", "stanfordCa1"],
   },
   {
     slug: "remifentanil",
@@ -290,6 +302,7 @@ export const drugs: Drug[] = [
       "Always have a longer-acting analgesic on board before stopping the infusion.",
       "Useful in obese, hepatic/renal failure — context-insensitive.",
     ],
+    references: ["stoelting", "miller", "barash", "stanfordCa1"],
   },
   {
     slug: "sufentanil",
@@ -306,6 +319,7 @@ export const drugs: Drug[] = [
     contraindications: ["Severe respiratory depression"],
     sideEffects: ["Respiratory depression", "Bradycardia", "Chest wall rigidity"],
     pearls: ["High-dose cardiac induction provides exceptional hemodynamic stability."],
+    references: ["stoelting", "miller", "barash", "stanfordCa1"],
   },
   {
     slug: "morphine",
@@ -322,6 +336,7 @@ export const drugs: Drug[] = [
     contraindications: ["Renal failure (caution — M6G accumulates)"],
     sideEffects: ["Histamine release / hypotension", "Pruritus", "PONV", "Constipation", "Delayed respiratory depression with neuraxial"],
     pearls: ["Monitor 24 h for delayed respiratory depression after intrathecal morphine."],
+    references: ["stoelting", "miller", "barash", "stanfordCa1"],
   },
   {
     slug: "hydromorphone",
@@ -338,6 +353,7 @@ export const drugs: Drug[] = [
     contraindications: ["Severe respiratory depression"],
     sideEffects: ["Sedation", "Respiratory depression", "Pruritus"],
     pearls: ["Preferred over morphine in renal failure (no clinically active metabolite)."],
+    references: ["stoelting", "miller", "barash", "stanfordCa1"],
   },
   // ---------- VASOPRESSORS ----------
   {
@@ -358,6 +374,7 @@ export const drugs: Drug[] = [
       "First-line for spinal-induced hypotension at C-section.",
       "Avoid in low-output states — pure afterload increase can drop CO.",
     ],
+    references: ["stoelting", "miller", "soapHypotension", "stanfordCa1"],
   },
   {
     slug: "ephedrine",
@@ -374,6 +391,7 @@ export const drugs: Drug[] = [
     contraindications: ["Severe CAD", "MAOI use"],
     sideEffects: ["Tachycardia", "Tachyphylaxis", "HTN"],
     pearls: ["Useful when both pressure and rate are low; less first-line at C-section due to fetal acidosis (vs phenylephrine)."],
+    references: ["stoelting", "miller", "soapHypotension", "stanfordCa1"],
   },
   {
     slug: "norepinephrine",
@@ -391,6 +409,7 @@ export const drugs: Drug[] = [
     contraindications: ["Mesenteric/peripheral vascular thrombosis (relative)"],
     sideEffects: ["Arrhythmia", "Peripheral ischemia/extravasation injury (treat with phentolamine)"],
     pearls: ["Now safely run via large-bore peripheral IV at low concentrations short-term (consensus shift)."],
+    references: ["stoelting", "ssc", "miller", "stanfordCa1"],
   },
   {
     slug: "epinephrine",
@@ -407,6 +426,7 @@ export const drugs: Drug[] = [
     contraindications: ["None in life-threatening situations"],
     sideEffects: ["Tachyarrhythmia", "Hyperglycemia", "Lactic acidosis"],
     pearls: ["IM lateral thigh is fastest extra-vascular route in anaphylaxis."],
+    references: ["stoelting", "acls", "miller", "stanfordCa1"],
   },
   {
     slug: "vasopressin",
@@ -422,6 +442,7 @@ export const drugs: Drug[] = [
     contraindications: ["Coronary ischemia (high dose)"],
     sideEffects: ["Splanchnic ischemia", "Hyponatremia"],
     pearls: ["Catecholamine-sparing — useful when escalating norepinephrine doses cause tachyarrhythmia."],
+    references: ["stoelting", "ssc", "miller", "stanfordCa1"],
   },
   // ---------- LOCAL ANESTHETICS ----------
   {
@@ -443,6 +464,7 @@ export const drugs: Drug[] = [
       "Always know your max dose and the patient's weight.",
       "LAST treatment: lipid emulsion 1.5 mL/kg bolus → 0.25 mL/kg/min.",
     ],
+    references: ["stoelting", "asraLast", "weinbergLipid", "miller", "stanfordCa1"],
   },
   {
     slug: "bupivacaine",
@@ -462,6 +484,7 @@ export const drugs: Drug[] = [
       "More cardiotoxic than equipotent lidocaine — the 'CC/CNS ratio' is lower.",
       "Levobupivacaine and ropivacaine are less cardiotoxic alternatives.",
     ],
+    references: ["stoelting", "asraLast", "weinbergLipid", "miller", "stanfordCa1"],
   },
   {
     slug: "ropivacaine",
@@ -478,6 +501,7 @@ export const drugs: Drug[] = [
     contraindications: ["IV regional"],
     sideEffects: ["LAST (less cardiotoxic than bupivacaine)"],
     pearls: ["Excellent labor epidural agent — analgesia with preserved motor function."],
+    references: ["stoelting", "asraLast", "miller", "stanfordCa1"],
   },
   // ---------- REVERSAL ----------
   {
@@ -503,6 +527,7 @@ export const drugs: Drug[] = [
       "16 mg/kg can rescue 'cannot intubate, cannot ventilate' after high-dose rocuronium RSI.",
       "Wait 5 min before redosing rocuronium after 2–4 mg/kg; 24 h after 16 mg/kg.",
     ],
+    references: ["stoelting", "miller", "barash", "stanfordCa1"],
   },
   {
     slug: "neostigmine",
@@ -522,6 +547,7 @@ export const drugs: Drug[] = [
       "Ceiling effect — cannot reverse deep block; use sugammadex if available.",
       "Always pair with anti-muscarinic (glycopyrrolate or atropine).",
     ],
+    references: ["stoelting", "miller", "barash", "stanfordCa1"],
   },
   {
     slug: "naloxone",
@@ -542,6 +568,7 @@ export const drugs: Drug[] = [
       "Titrate in 0.04 mg increments to restore respiration without abolishing analgesia.",
       "Re-dose anticipated — duration is shorter than most opioids.",
     ],
+    references: ["stoelting", "miller", "barash", "stanfordCa1"],
   },
   // ---------- ANTIEMETICS ----------
   {
@@ -560,6 +587,7 @@ export const drugs: Drug[] = [
     contraindications: ["Long QT syndrome (relative; dose-dependent QT prolongation)"],
     sideEffects: ["Headache", "Constipation", "QT prolongation"],
     pearls: ["Most effective if given at end of case rather than at induction."],
+    references: ["stoelting", "apfel", "apfelImpact", "miller", "stanfordCa1"],
   },
   {
     slug: "dexamethasone",
@@ -577,6 +605,7 @@ export const drugs: Drug[] = [
     contraindications: ["Systemic fungal infection"],
     sideEffects: ["Transient hyperglycemia", "Perineal burning on rapid push"],
     pearls: ["Synergistic with ondansetron — combine for high-risk PONV patients."],
+    references: ["stoelting", "apfel", "apfelImpact", "miller", "stanfordCa1"],
   },
 ];
 

@@ -9,6 +9,8 @@ export type Subspecialty = {
   monitoring: string[];
   commonDrugs: string[];
   pearls: string[];
+  /** Reference IDs from src/lib/references.ts */
+  references?: string[];
 };
 
 export const subspecialties: Subspecialty[] = [
@@ -52,6 +54,7 @@ export const subspecialties: Subspecialty[] = [
       "Right ventricular failure post-bypass is a clinical and TEE diagnosis — treat with inhaled pulmonary vasodilators and inotropes.",
       "Antifibrinolytics (TXA) reduce transfusion in cardiac surgery — dose-dependent seizure risk at high doses.",
     ],
+    references: ["miller", "barash", "morganMikhail"],
   },
   {
     slug: "neuroanesthesia",
@@ -91,6 +94,7 @@ export const subspecialties: Subspecialty[] = [
       "Avoid succinylcholine in spinal cord injury > 48 h, prolonged immobilization, denervation — hyperkalemia risk.",
       "Anchor your hemodynamic targets to the patient's baseline BP, not population norms.",
     ],
+    references: ["miller", "barash", "stoelting"],
   },
   {
     slug: "obstetric",
@@ -129,6 +133,7 @@ export const subspecialties: Subspecialty[] = [
       "Failed intubation drill: maintain cricoid (or release if obstructing), bag-mask + LMA, wake or proceed per algorithm.",
       "Magnesium-treated preeclamptic patients — anticipate potentiation of NMBA.",
     ],
+    references: ["soapHypotension", "asaNpo", "miller", "barash"],
   },
   {
     slug: "pediatric",
@@ -167,6 +172,7 @@ export const subspecialties: Subspecialty[] = [
       "Avoid succinylcholine in undiagnosed myopathies — hyperkalemic cardiac arrest reported.",
       "Always have a clear weight in kg — most pediatric errors are dosing errors.",
     ],
+    references: ["asaNpo", "miller", "barash", "morganMikhail"],
   },
   {
     slug: "regional",
@@ -205,6 +211,7 @@ export const subspecialties: Subspecialty[] = [
       "Always image the needle tip in plane and confirm circumferential spread.",
       "Pneumothorax risk: highest with supraclavicular > infraclavicular > interscalene.",
     ],
+    references: ["asraAnticoag", "asraLast", "miller", "barash"],
   },
   {
     slug: "critical-care",
@@ -238,6 +245,7 @@ export const subspecialties: Subspecialty[] = [
       "POCUS rapidly distinguishes shock states — IVC, cardiac windows, lungs.",
       "Fluid responsiveness is dynamic — passive leg raise or pulse pressure variation > static CVP.",
     ],
+    references: ["ssc", "ardsnet", "acls", "miller"],
   },
   {
     slug: "pain",
@@ -271,6 +279,7 @@ export const subspecialties: Subspecialty[] = [
       "Screen all chronic opioid patients for OUD — naloxone Rx, PDMP review.",
       "Ketamine infusion 0.1–0.3 mg/kg/h has growing evidence for acute and chronic pain.",
     ],
+    references: ["miller", "barash", "stoelting"],
   },
   {
     slug: "ambulatory",
@@ -304,6 +313,7 @@ export const subspecialties: Subspecialty[] = [
       "Avoid long-acting opioids — they undermine your discharge time and create unsafe outpatients.",
       "Field block / wound infiltration before incision provides hours of analgesia for free.",
     ],
+    references: ["apfel", "apfelImpact", "asaNpo", "miller"],
   },
   {
     slug: "trauma",
@@ -338,6 +348,7 @@ export const subspecialties: Subspecialty[] = [
       "Recheck the patient continually; trauma is a moving target.",
       "Communicate clearly with surgical team about pressure goals.",
     ],
+    references: ["acls", "prismMassiveTx", "miller", "barash"],
   },
   {
     slug: "transplant",
@@ -371,6 +382,7 @@ export const subspecialties: Subspecialty[] = [
       "TEG/ROTEM trumps the conventional coag panel for guiding component therapy in liver transplant.",
       "Brief communication with surgeon at every clamp/unclamp prevents the worst surprises.",
     ],
+    references: ["miller", "barash", "jaffe"],
   },
 ];
 

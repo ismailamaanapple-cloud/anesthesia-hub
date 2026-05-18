@@ -29,6 +29,7 @@ export function BmiBsaCalc() {
       title="BMI & BSA"
       description="Body Mass Index and Body Surface Area (Mosteller formula)."
       formula="BSA (m²) = √(height × weight / 3600)"
+      references={["mosteller"]}
     >
       <div className="grid sm:grid-cols-2 gap-4">
         <Field label="Weight" unit="kg" value={weight} onChange={setWeight} />
