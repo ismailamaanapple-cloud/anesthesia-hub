@@ -4,6 +4,7 @@ import { ArrowLeft, Pill, AlertTriangle, ShieldAlert, Sparkles, Clock, Activity,
 import { drugs, getDrug } from "@/lib/drugs";
 import { ReferenceList } from "@/components/reference-list";
 import { BookmarkButton } from "@/components/bookmark-button";
+import { QuickDoseWidget } from "@/components/quick-dose-widget";
 
 export function generateStaticParams() {
   return drugs.map((d) => ({ slug: d.slug }));
@@ -64,6 +65,9 @@ export default async function DrugPage({
           </div>
         </div>
       </div>
+
+      {/* QUICK DOSE WIDGET */}
+      <QuickDoseWidget drugName={drug.name} />
 
       {/* KEY STATS */}
       <div className="mt-6 grid sm:grid-cols-3 gap-4">

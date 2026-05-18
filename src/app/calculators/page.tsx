@@ -10,6 +10,11 @@ import {
   Gauge,
   HeartPulse,
   ArrowRight,
+  Syringe,
+  Crosshair,
+  Repeat,
+  RotateCcw,
+  Sparkles,
 } from "lucide-react";
 import { calculators } from "@/lib/calculators";
 
@@ -22,9 +27,14 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Siren,
   Gauge,
   HeartPulse,
+  Syringe,
+  Crosshair,
+  Repeat,
+  RotateCcw,
 };
 
 const categoryColors: Record<string, string> = {
+  Dosing: "from-violet-500 to-fuchsia-500",
   Patient: "from-primary to-accent",
   Airway: "from-sky-500 to-indigo-500",
   "Fluids & Blood": "from-rose-500 to-orange-500",
@@ -56,6 +66,37 @@ export default function CalculatorsPage() {
           </p>
         </div>
       </div>
+
+      {/* Headline dosing CTA */}
+      <Link
+        href="/calculators/drug-doses"
+        className="mt-8 group relative overflow-hidden rounded-3xl border border-primary/30 bg-card p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 card-lift block"
+      >
+        <div className="absolute inset-0 bg-aurora opacity-80 pointer-events-none" />
+        <div className="absolute inset-0 bg-grid opacity-30 pointer-events-none" />
+        <div className="relative flex items-start gap-4">
+          <span className="h-12 w-12 grid place-items-center rounded-2xl bg-gradient-to-br from-violet-500 to-fuchsia-500 text-white shadow-lg shadow-fuchsia-500/30 shrink-0">
+            <Syringe className="h-6 w-6" />
+          </span>
+          <div>
+            <div className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-[0.18em] text-primary font-medium">
+              <Sparkles className="h-3 w-3" />
+              New · headline tool
+            </div>
+            <h2 className="mt-1 text-xl sm:text-2xl font-semibold tracking-tight">
+              Weight-Based Drug Doses
+            </h2>
+            <p className="mt-1 text-sm text-muted-foreground max-w-md">
+              Enter the patient&apos;s weight (kg or lb) and get every common
+              anesthesia dose — induction, paralytics, opioids, reversal,
+              vasopressors, antiemetics — at once.
+            </p>
+          </div>
+        </div>
+        <span className="relative inline-flex items-center gap-1.5 text-sm font-medium text-primary self-start sm:self-auto">
+          Open <ArrowRight className="h-4 w-4" />
+        </span>
+      </Link>
 
       <div className="mt-10 space-y-10">
         {Object.entries(grouped).map(([cat, items]) => (

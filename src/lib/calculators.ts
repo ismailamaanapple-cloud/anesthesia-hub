@@ -1,12 +1,55 @@
 export type CalculatorMeta = {
   slug: string;
   name: string;
-  category: "Patient" | "Airway" | "Fluids & Blood" | "Risk" | "Pediatric";
+  category: "Dosing" | "Patient" | "Airway" | "Fluids & Blood" | "Risk" | "Pediatric";
   description: string;
   icon: string;
 };
 
 export const calculators: CalculatorMeta[] = [
+  // ---------- DOSING (new headline section) ----------
+  {
+    slug: "drug-doses",
+    name: "Weight-Based Drug Doses",
+    category: "Dosing",
+    description:
+      "Enter patient weight (lb or kg) → induction, NMBA, opioid, vasopressor, reversal, and emergency doses, all at once.",
+    icon: "Syringe",
+  },
+  {
+    slug: "local-anesthetic-max",
+    name: "Local Anesthetic Max Dose",
+    category: "Dosing",
+    description:
+      "Max mg + max mL by drug, concentration, weight, and whether epinephrine is added.",
+    icon: "Crosshair",
+  },
+  {
+    slug: "opioid-converter",
+    name: "Opioid Equianalgesic Converter",
+    category: "Dosing",
+    description:
+      "Convert between morphine, fentanyl, hydromorphone, oxycodone — IV and PO — with cross-tolerance reduction.",
+    icon: "Repeat",
+  },
+  {
+    slug: "pressor-drip",
+    name: "Vasopressor & Inotrope Drip Rates",
+    category: "Dosing",
+    description:
+      "Convert mcg/kg/min (or U/min) ↔ mL/h at standard institutional concentrations.",
+    icon: "Activity",
+  },
+  {
+    slug: "reversal",
+    name: "NMBA Reversal Calculator",
+    category: "Dosing",
+    description:
+      "Sugammadex dose by depth of block; neostigmine + glycopyrrolate dose with caveats.",
+    icon: "RotateCcw",
+  },
+
+  // ---------- Existing ----------
   {
     slug: "bmi-bsa",
     name: "BMI & BSA",

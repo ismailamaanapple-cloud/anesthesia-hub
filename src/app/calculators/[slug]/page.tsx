@@ -9,6 +9,11 @@ import { AblCalc } from "@/components/calculators/abl";
 import { PedsEmergencyCalc } from "@/components/calculators/peds-emergency";
 import { ApfelCalc } from "@/components/calculators/apfel";
 import { RcriCalc } from "@/components/calculators/rcri";
+import { DrugDosesCalc } from "@/components/calculators/drug-doses";
+import { LocalAnestheticMaxCalc } from "@/components/calculators/local-anesthetic-max";
+import { OpioidConverterCalc } from "@/components/calculators/opioid-converter";
+import { PressorDripCalc } from "@/components/calculators/pressor-drip";
+import { ReversalCalc } from "@/components/calculators/reversal";
 
 export function generateStaticParams() {
   return calculators.map((c) => ({ slug: c.slug }));
@@ -24,6 +29,16 @@ export default async function CalculatorPage({
   if (!meta) notFound();
 
   switch (slug) {
+    case "drug-doses":
+      return <DrugDosesCalc />;
+    case "local-anesthetic-max":
+      return <LocalAnestheticMaxCalc />;
+    case "opioid-converter":
+      return <OpioidConverterCalc />;
+    case "pressor-drip":
+      return <PressorDripCalc />;
+    case "reversal":
+      return <ReversalCalc />;
     case "bmi-bsa":
       return <BmiBsaCalc />;
     case "ibw-abw":
