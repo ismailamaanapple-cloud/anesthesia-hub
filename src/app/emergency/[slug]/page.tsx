@@ -60,36 +60,35 @@ export default async function EmergencyPage({
       </div>
 
       {/* Header / Call-out */}
-      <div className="mt-5 rounded-3xl border border-border bg-card p-7 relative overflow-hidden">
+      <div className="mt-5 rounded-3xl border border-border bg-card p-5 sm:p-7 relative overflow-hidden">
         <div
           className={`absolute -top-20 -right-20 h-60 w-60 rounded-full bg-gradient-to-br ${e.color} opacity-20 blur-3xl print:hidden`}
         />
-        <div className="relative flex items-start gap-4">
-          <span
-            className={`h-12 w-12 grid place-items-center rounded-2xl bg-gradient-to-br ${e.color} text-white shadow-lg`}
-          >
-            <Icon className="h-6 w-6" />
-          </span>
-          <div className="flex-1">
-            <div className="flex items-start justify-between gap-3">
-              <div>
-                <div className="text-[10px] uppercase tracking-[0.18em] text-destructive font-medium">
-                  Emergency · Crisis Card
-                </div>
-                <h1 className="mt-1 text-3xl sm:text-4xl font-semibold tracking-tight">
-                  {e.name}
-                </h1>
-                <p className="mt-2 text-muted-foreground">{e.tagline}</p>
-              </div>
+        <div className="relative">
+          <div className="flex items-center gap-3 flex-wrap">
+            <span
+              className={`h-11 w-11 grid place-items-center rounded-2xl bg-gradient-to-br ${e.color} text-white shadow-lg shrink-0`}
+            >
+              <Icon className="h-5 w-5" />
+            </span>
+            <span className="text-[10px] uppercase tracking-[0.18em] text-destructive font-medium px-2 py-1 rounded-full bg-destructive/10 border border-destructive/20">
+              Crisis Card
+            </span>
+            <div className="ml-auto">
               <BookmarkButton
                 kind="emergency"
                 slug={e.slug}
                 title={e.name}
                 subtitle="Emergency"
                 href={`/emergency/${e.slug}`}
+                size="sm"
               />
             </div>
           </div>
+          <h1 className="mt-4 text-2xl sm:text-4xl font-semibold tracking-tight">
+            {e.name}
+          </h1>
+          <p className="mt-2 text-sm sm:text-base text-muted-foreground">{e.tagline}</p>
         </div>
         {e.callOut && (
           <div className="relative mt-5 rounded-2xl border border-destructive/40 bg-destructive/10 px-5 py-4 text-sm font-medium text-destructive flex items-start gap-3">

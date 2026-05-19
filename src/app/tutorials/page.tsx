@@ -104,33 +104,31 @@ export default function TutorialsPage() {
       </div>
 
       {/* Search + filters */}
-      <div className="mt-8 sticky top-16 z-20 -mx-4 px-4 py-3 backdrop-blur bg-background/80 border-b border-border">
-        <div className="flex flex-col lg:flex-row gap-3 lg:items-center">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <input
-              value={q}
-              onChange={(e) => setQ(e.target.value)}
-              placeholder="Search chapters by title, tagline, or key point…"
-              className="w-full h-11 pl-10 pr-3 rounded-xl border border-border bg-card text-sm focus:border-primary outline-none transition-colors"
-            />
-          </div>
-          <div className="flex flex-wrap gap-1.5">
-            {tutorialCategories.map((c) => (
-              <button
-                key={c}
-                onClick={() => setCat(c)}
-                className={cn(
-                  "px-3 h-9 rounded-lg text-xs font-medium border transition-colors whitespace-nowrap",
-                  cat === c
-                    ? "bg-primary/10 border-primary/40 text-primary"
-                    : "border-border bg-card hover:bg-muted text-muted-foreground"
-                )}
-              >
-                {c}
-              </button>
-            ))}
-          </div>
+      <div className="mt-8 space-y-3">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <input
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            placeholder="Search chapters by title, tagline, or key point…"
+            className="w-full h-11 pl-10 pr-3 rounded-xl border border-border bg-card text-sm focus:border-primary outline-none transition-colors"
+          />
+        </div>
+        <div className="flex gap-1.5 overflow-x-auto -mx-4 px-4 pb-1 lg:flex-wrap lg:mx-0 lg:px-0 lg:pb-0 lg:overflow-visible">
+          {tutorialCategories.map((c) => (
+            <button
+              key={c}
+              onClick={() => setCat(c)}
+              className={cn(
+                "px-3 h-9 rounded-lg text-xs font-medium border transition-colors whitespace-nowrap shrink-0",
+                cat === c
+                  ? "bg-primary/10 border-primary/40 text-primary"
+                  : "border-border bg-card hover:bg-muted text-muted-foreground"
+              )}
+            >
+              {c}
+            </button>
+          ))}
         </div>
       </div>
 

@@ -90,38 +90,39 @@ export default async function TutorialPage({
       </Link>
 
       {/* Header */}
-      <div className="mt-6 rounded-3xl border border-border bg-card p-7 sm:p-9 relative overflow-hidden">
+      <div className="mt-6 rounded-3xl border border-border bg-card p-5 sm:p-9 relative overflow-hidden">
         <div
           className={`absolute -top-24 -right-24 h-72 w-72 rounded-full bg-gradient-to-br ${t.color} opacity-20 blur-3xl`}
         />
-        <div className="relative flex items-start gap-4">
-          <span
-            className={`h-12 w-12 grid place-items-center rounded-2xl bg-gradient-to-br ${t.color} text-white shadow-lg`}
-          >
-            <Icon className="h-6 w-6" />
-          </span>
-          <div className="flex-1">
-            <div className="flex items-start justify-between gap-3">
-              <div>
-                <div className="text-[10px] uppercase tracking-[0.18em] text-primary font-medium">
-                  Chapter {t.number} · {t.category}
-                </div>
-                <h1 className="mt-1 text-3xl sm:text-4xl font-semibold tracking-tight">
-                  {t.title}
-                </h1>
-                <p className="mt-2 text-muted-foreground">{t.tagline}</p>
-                <div className="mt-4 flex items-center gap-2 text-xs text-muted-foreground">
-                  <Clock className="h-3.5 w-3.5" />
-                  {t.readMinutes} min read
-                </div>
-              </div>
+        <div className="relative">
+          <div className="flex items-center gap-3 flex-wrap">
+            <span
+              className={`h-11 w-11 grid place-items-center rounded-2xl bg-gradient-to-br ${t.color} text-white shadow-lg shrink-0`}
+            >
+              <Icon className="h-5 w-5" />
+            </span>
+            <span className="text-[10px] uppercase tracking-[0.18em] text-primary font-medium px-2 py-1 rounded-full bg-primary/10 border border-primary/20 truncate max-w-[55%]">
+              Ch {t.number} · {t.category}
+            </span>
+            <div className="ml-auto">
               <BookmarkButton
                 kind="tutorial"
                 slug={t.slug}
                 title={t.title}
                 subtitle={`Ch ${t.number} · ${t.category}`}
                 href={`/tutorials/${t.slug}`}
+                size="sm"
               />
+            </div>
+          </div>
+          <div>
+            <h1 className="mt-4 text-2xl sm:text-4xl font-semibold tracking-tight">
+              {t.title}
+            </h1>
+            <p className="mt-2 text-sm sm:text-base text-muted-foreground">{t.tagline}</p>
+            <div className="mt-3 flex items-center gap-2 text-xs text-muted-foreground">
+              <Clock className="h-3.5 w-3.5" />
+              {t.readMinutes} min read
             </div>
           </div>
         </div>

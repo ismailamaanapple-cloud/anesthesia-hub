@@ -29,40 +29,40 @@ export default async function DrugPage({
       </Link>
 
       {/* HEADER */}
-      <div className="mt-6 rounded-2xl border border-border bg-card p-7 relative overflow-hidden">
+      <div className="mt-6 rounded-2xl border border-border bg-card p-5 sm:p-7 relative overflow-hidden">
         <div className="absolute -top-12 -right-12 h-40 w-40 rounded-full bg-gradient-to-br from-primary to-accent opacity-15 blur-3xl" />
-        <div className="flex items-start gap-4 relative">
-          <span className="h-12 w-12 grid place-items-center rounded-2xl bg-gradient-to-br from-primary to-accent text-primary-foreground shadow-lg shadow-primary/20">
-            <Pill className="h-6 w-6" />
-          </span>
-          <div className="flex-1">
-            <div className="flex items-start justify-between gap-3">
-              <div>
-                <div className="text-[10px] uppercase tracking-wider text-primary font-medium">
-                  {drug.category} · {drug.class}
-                </div>
-                <h1 className="mt-1 text-3xl font-semibold tracking-tight">
-                  {drug.name}
-                </h1>
-                {drug.brands && (
-                  <div className="text-sm text-muted-foreground">
-                    {drug.brands.join(", ")}
-                  </div>
-                )}
-              </div>
+        <div className="relative">
+          {/* Top row: icon, category chip, bookmark — clean and aligned on mobile */}
+          <div className="flex items-center gap-3 flex-wrap">
+            <span className="h-11 w-11 grid place-items-center rounded-2xl bg-gradient-to-br from-primary to-accent text-primary-foreground shadow-lg shadow-primary/20 shrink-0">
+              <Pill className="h-5 w-5" />
+            </span>
+            <span className="text-[10px] uppercase tracking-wider text-primary font-medium px-2 py-1 rounded-full bg-primary/10 border border-primary/20 truncate max-w-[55%]">
+              {drug.category}
+            </span>
+            <div className="ml-auto">
               <BookmarkButton
                 kind="drug"
                 slug={drug.slug}
                 title={drug.name}
                 subtitle={drug.category}
                 href={`/drugs/${drug.slug}`}
+                size="sm"
               />
             </div>
-            <p className="mt-4 text-sm text-muted-foreground leading-relaxed max-w-3xl">
-              <span className="font-medium text-foreground">Mechanism:</span>{" "}
-              {drug.mechanism}
-            </p>
           </div>
+          {/* Title block */}
+          <h1 className="mt-4 text-2xl sm:text-3xl font-semibold tracking-tight">
+            {drug.name}
+          </h1>
+          <div className="text-xs sm:text-sm text-muted-foreground">
+            {drug.class}
+            {drug.brands ? ` · ${drug.brands.join(", ")}` : ""}
+          </div>
+          <p className="mt-3 text-sm text-muted-foreground leading-relaxed max-w-3xl">
+            <span className="font-medium text-foreground">Mechanism:</span>{" "}
+            {drug.mechanism}
+          </p>
         </div>
       </div>
 

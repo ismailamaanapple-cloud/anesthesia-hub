@@ -54,34 +54,36 @@ export default async function SubspecialtyPage({
       </Link>
 
       {/* Header */}
-      <div className="mt-6 rounded-3xl border border-border bg-card p-8 relative overflow-hidden">
+      <div className="mt-6 rounded-3xl border border-border bg-card p-5 sm:p-8 relative overflow-hidden">
         <div
           className={`absolute -top-20 -right-20 h-60 w-60 rounded-full bg-gradient-to-br ${s.color} opacity-20 blur-3xl`}
         />
-        <div className="relative flex items-start gap-4">
-          <span
-            className={`h-12 w-12 grid place-items-center rounded-2xl bg-gradient-to-br ${s.color} text-white shadow-lg`}
-          >
-            <Icon className="h-6 w-6" />
-          </span>
-          <div className="flex-1">
-            <div className="flex items-start justify-between gap-3">
-              <div>
-                <h1 className="text-3xl font-semibold tracking-tight">{s.name}</h1>
-                <p className="mt-1 text-muted-foreground">{s.tagline}</p>
-              </div>
+        <div className="relative">
+          <div className="flex items-center gap-3 flex-wrap">
+            <span
+              className={`h-11 w-11 grid place-items-center rounded-2xl bg-gradient-to-br ${s.color} text-white shadow-lg shrink-0`}
+            >
+              <Icon className="h-5 w-5" />
+            </span>
+            <span className="text-[10px] uppercase tracking-[0.18em] text-primary font-medium px-2 py-1 rounded-full bg-primary/10 border border-primary/20">
+              Subspecialty
+            </span>
+            <div className="ml-auto">
               <BookmarkButton
                 kind="subspecialty"
                 slug={s.slug}
                 title={s.name}
                 subtitle={s.tagline}
                 href={`/subspecialties/${s.slug}`}
+                size="sm"
               />
             </div>
-            <p className="mt-5 text-sm leading-relaxed text-foreground/85 max-w-3xl">
-              {s.overview}
-            </p>
           </div>
+          <h1 className="mt-4 text-2xl sm:text-3xl font-semibold tracking-tight">{s.name}</h1>
+          <p className="mt-1 text-sm sm:text-base text-muted-foreground">{s.tagline}</p>
+          <p className="mt-4 text-sm leading-relaxed text-foreground/85 max-w-3xl">
+            {s.overview}
+          </p>
         </div>
       </div>
 

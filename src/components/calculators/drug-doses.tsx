@@ -39,22 +39,24 @@ export function DrugDosesCalc() {
         </div>
       </div>
 
-      {/* Category filter */}
-      <div className="mt-6 flex items-center gap-2 flex-wrap">
-        <Filter className="h-3.5 w-3.5 text-muted-foreground" />
-        <FilterPill
-          label="All"
-          active={activeCat === "All"}
-          onClick={() => setActiveCat("All")}
-        />
-        {DOSE_CATEGORIES.map((c) => (
+      {/* Category filter — horizontal scroll on mobile, wrap on desktop */}
+      <div className="mt-6 flex items-center gap-2">
+        <Filter className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+        <div className="flex gap-2 overflow-x-auto -mr-4 pr-4 pb-1 sm:flex-wrap sm:mr-0 sm:pr-0 sm:pb-0 sm:overflow-visible">
           <FilterPill
-            key={c.category}
-            label={c.category}
-            active={activeCat === c.category}
-            onClick={() => setActiveCat(c.category)}
+            label="All"
+            active={activeCat === "All"}
+            onClick={() => setActiveCat("All")}
           />
-        ))}
+          {DOSE_CATEGORIES.map((c) => (
+            <FilterPill
+              key={c.category}
+              label={c.category}
+              active={activeCat === c.category}
+              onClick={() => setActiveCat(c.category)}
+            />
+          ))}
+        </div>
       </div>
 
       {/* Results */}

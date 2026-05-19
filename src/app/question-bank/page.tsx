@@ -344,7 +344,7 @@ export default function QuestionBankPage() {
           <div className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium mb-1.5 flex items-center gap-1">
             <Filter className="h-3 w-3" /> Category
           </div>
-          <div className="flex flex-wrap gap-1.5">
+          <div className="flex gap-1.5 overflow-x-auto -mx-4 px-4 pb-1 sm:flex-wrap sm:mx-0 sm:px-0 sm:pb-0 sm:overflow-visible">
             {categories.map((c) => (
               <Pill
                 key={c}

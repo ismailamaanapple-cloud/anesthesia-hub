@@ -42,32 +42,31 @@ export default function DrugsPage() {
         subtitle="Anesthetic agents, paralytics, opioids, pressors, locals, reversals, and antiemetics — with doses, kinetics, contraindications, and pearls."
       />
 
-      <div className="mt-8 sticky top-16 z-20 -mx-4 px-4 py-3 backdrop-blur bg-background/80 border-b border-border">
-        <div className="flex flex-col lg:flex-row gap-3 lg:items-center">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <input
-              value={q}
-              onChange={(e) => setQ(e.target.value)}
-              placeholder="Search by name, brand, or class…"
-              className="w-full h-11 pl-10 pr-3 rounded-xl border border-border bg-card text-sm focus:border-primary outline-none transition-colors"
-            />
-          </div>
-          <div className="flex flex-wrap gap-1.5">
-            {(["All", ...drugCategories] as const).map((c) => (
-              <button
-                key={c}
-                onClick={() => setCat(c)}
-                className={`px-3 h-9 rounded-lg text-xs font-medium border transition-colors whitespace-nowrap ${
-                  cat === c
-                    ? "bg-primary/10 border-primary/40 text-primary"
-                    : "border-border bg-card hover:bg-muted text-muted-foreground"
-                }`}
-              >
-                {c}
-              </button>
-            ))}
-          </div>
+      <div className="mt-8 space-y-3">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <input
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            placeholder="Search by name, brand, or class…"
+            className="w-full h-11 pl-10 pr-3 rounded-xl border border-border bg-card text-sm focus:border-primary outline-none transition-colors"
+          />
+        </div>
+        {/* Horizontally-scrollable filter pills on mobile, wrap on desktop */}
+        <div className="flex gap-1.5 overflow-x-auto -mx-4 px-4 pb-1 lg:flex-wrap lg:mx-0 lg:px-0 lg:pb-0 lg:overflow-visible">
+          {(["All", ...drugCategories] as const).map((c) => (
+            <button
+              key={c}
+              onClick={() => setCat(c)}
+              className={`px-3 h-9 rounded-lg text-xs font-medium border transition-colors whitespace-nowrap shrink-0 ${
+                cat === c
+                  ? "bg-primary/10 border-primary/40 text-primary"
+                  : "border-border bg-card hover:bg-muted text-muted-foreground"
+              }`}
+            >
+              {c}
+            </button>
+          ))}
         </div>
       </div>
 
@@ -85,12 +84,17 @@ export default function DrugsPage() {
             <div
               className={`absolute -top-12 -right-12 h-32 w-32 rounded-full bg-gradient-to-br ${
                 categoryColors[d.category]
-              } opacity-10 blur-2xl group-hover:opacity-20 transition-opacity`}
+              } opacity-15 blur-2xl group-hover:opacity-25 transition-opacity pointer-events-none`}
             />
-            <div className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">
-              {d.category}
+            <div className="relative flex items-center justify-between gap-2">
+              <span
+                className={`inline-flex items-center gap-1.5 text-[10px] uppercase tracking-wider font-semibold text-white px-2 py-0.5 rounded-full bg-gradient-to-r ${categoryColors[d.category]} shadow-sm max-w-[80%] truncate`}
+              >
+                {d.category}
+              </span>
+              <ArrowRight className="h-3.5 w-3.5 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity shrink-0" />
             </div>
-            <h3 className="mt-1 text-lg font-semibold tracking-tight">
+            <h3 className="mt-3 text-lg font-semibold tracking-tight">
               {d.name}
             </h3>
             {d.brands && (
@@ -98,21 +102,18 @@ export default function DrugsPage() {
                 {d.brands.join(", ")}
               </div>
             )}
-            <div className="mt-3 text-xs text-muted-foreground line-clamp-2">
+            <div className="mt-3 text-xs text-muted-foreground line-clamp-2 leading-relaxed">
               {d.mechanism}
             </div>
-            <div className="mt-4 flex items-center gap-3 text-[11px] text-muted-foreground">
-              <span>
-                <span className="text-foreground/70">Onset</span> {d.onset}
-              </span>
-              <span className="opacity-30">·</span>
-              <span>
-                <span className="text-foreground/70">Duration</span>{" "}
-                {d.duration}
-              </span>
-            </div>
-            <div className="mt-4 inline-flex items-center gap-1 text-xs text-primary font-medium opacity-0 group-hover:opacity-100 transition-opacity">
-              View details <ArrowRight className="h-3 w-3" />
+            <div className="mt-4 pt-3 border-t border-border flex items-center justify-between gap-2 text-[11px] text-muted-foreground">
+              <div>
+                <div className="text-foreground/60">Onset</div>
+                <div className="font-medium text-foreground/85">{d.onset}</div>
+              </div>
+              <div className="text-right">
+                <div className="text-foreground/60">Duration</div>
+                <div className="font-medium text-foreground/85">{d.duration}</div>
+              </div>
             </div>
           </Link>
         ))}

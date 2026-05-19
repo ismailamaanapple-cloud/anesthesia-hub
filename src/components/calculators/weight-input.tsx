@@ -32,7 +32,8 @@ export function useWeight(initial = "70"): WeightState & {
       if (stored) {
         const { kg } = JSON.parse(stored) as { kg: number };
         if (isFinite(kg) && kg > 0) {
-          setRaw(String(kg));
+          // round to 1 decimal to avoid floating-point junk like 69.85330805308853
+          setRaw(kg < 10 ? kg.toFixed(2) : kg.toFixed(1));
         }
       }
     } catch {}
@@ -40,7 +41,9 @@ export function useWeight(initial = "70"): WeightState & {
 
   const persist = useCallback((kg: number) => {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ kg }));
+      // round before persisting so the display stays clean across page loads
+      const rounded = Math.round(kg * 10) / 10;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ kg: rounded }));
     } catch {}
   }, []);
 
