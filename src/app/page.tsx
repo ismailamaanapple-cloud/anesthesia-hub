@@ -27,6 +27,7 @@ import {
   Droplets,
 } from "lucide-react";
 import { subspecialties } from "@/lib/subspecialties";
+import { questions } from "@/lib/questions";
 
 const subspecialtyIcons: Record<string, React.ComponentType<{ className?: string }>> = {
   Heart,
@@ -97,7 +98,7 @@ export default function Home() {
               <Stat label="Chapters" value="26" />
               <Stat label="Drugs" value="27" />
               <Stat label="Calculators" value="14" />
-              <Stat label="MCQs" value="235" />
+              <Stat label="MCQs" value={`${questions.length}`} />
             </div>
           </div>
 
@@ -223,9 +224,9 @@ export default function Home() {
             href="/question-bank"
             icon={GraduationCap}
             title="Question Bank"
-            description="235 board-style MCQs across 12 categories with detailed explanations. Quiz mode, Review mode, status filters, bookmarks."
+            description={`${questions.length} board-style MCQs across 12 categories with detailed explanations. Quiz mode, Review mode, status filters, bookmarks.`}
             accent="from-amber-500 to-orange-500"
-            badge="235 MCQs"
+            badge={`${questions.length} MCQs`}
           />
         </div>
       </section>
