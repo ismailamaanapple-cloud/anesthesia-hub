@@ -14,12 +14,14 @@ import {
   CornerDownLeft,
   X,
   Star,
+  Library,
 } from "lucide-react";
 import { drugs } from "@/lib/drugs";
 import { calculators } from "@/lib/calculators";
 import { tutorials } from "@/lib/tutorials";
 import { subspecialties } from "@/lib/subspecialties";
 import { emergencies } from "@/lib/emergencies";
+import { resourceGroups } from "@/lib/resources";
 import { cn } from "@/lib/utils";
 
 type Item = {
@@ -72,6 +74,16 @@ function buildIndex(): Item[] {
       subtitle: s.tagline,
       group: "Subspecialties",
       icon: BookOpen,
+    });
+  }
+  for (const g of resourceGroups) {
+    out.push({
+      id: `res-${g.slug}`,
+      href: `/resources#${g.slug}`,
+      title: g.title,
+      subtitle: "Resources · " + g.description,
+      group: "Resources",
+      icon: Library,
     });
   }
   for (const e of emergencies) {
@@ -133,6 +145,14 @@ function buildIndex(): Item[] {
       subtitle: "MCQ practice",
       group: "Navigate",
       icon: GraduationCap,
+    },
+    {
+      id: "nav-resources",
+      href: "/resources",
+      title: "Resources",
+      subtitle: "Textbooks, board prep & podcasts",
+      group: "Navigate",
+      icon: Library,
     },
     {
       id: "nav-ai",

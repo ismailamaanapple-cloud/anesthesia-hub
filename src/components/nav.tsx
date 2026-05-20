@@ -11,6 +11,7 @@ import {
   Brain,
   GraduationCap,
   BookMarked,
+  Library,
   Siren,
   Menu,
   X,
@@ -26,6 +27,7 @@ const links = [
   { href: "/emergency", label: "Emergency", icon: Siren },
   { href: "/subspecialties", label: "Subs", icon: BookOpen },
   { href: "/question-bank", label: "Q-Bank", icon: GraduationCap },
+  { href: "/resources", label: "Resources", icon: Library },
   { href: "/ai-assistant", label: "AI", icon: Brain },
 ];
 

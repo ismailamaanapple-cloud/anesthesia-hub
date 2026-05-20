@@ -25,6 +25,7 @@ import {
   FlaskConical,
   Wind,
   Droplets,
+  Library,
 } from "lucide-react";
 import { subspecialties } from "@/lib/subspecialties";
 import { questions } from "@/lib/questions";
@@ -227,6 +228,14 @@ export default function Home() {
             description={`${questions.length} board-style MCQs across 12 categories with detailed explanations. Quiz mode, Review mode, status filters, bookmarks.`}
             accent="from-amber-500 to-orange-500"
             badge={`${questions.length} MCQs`}
+          />
+          <FeatureCard
+            href="/resources"
+            icon={Library}
+            title="Resources"
+            description="Curated textbooks, board prep, free sites, and podcasts for medical students and residents — Morgan & Mikhail, Miller, Baby Miller, and more."
+            accent="from-sky-500 to-blue-500"
+            badge="For students & residents"
           />
         </div>
       </section>
