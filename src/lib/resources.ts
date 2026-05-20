@@ -223,6 +223,15 @@ export const resourceGroups: ResourceGroup[] = [
       "High-quality, freely accessible sites. Great for just-in-time learning and visual/procedural topics.",
     items: [
       {
+        title: "Stanford Anesthesia CA-1 Guide",
+        by: "Stanford Department of Anesthesiology (Ether)",
+        blurb:
+          "The single best free onboarding resource for a new resident. Written by Stanford faculty and residents, it walks you through the things nobody formally teaches — how to set up your machine and workspace, the structured pre-op evaluation, a practical induction-to-emergence game plan, and how to actually run a case as a CA-1. Skim it before your first day in the OR, then keep it open during your first months. Pairs perfectly with a core text like Morgan & Mikhail.",
+        levels: ["Medical student", "CA-1 / Junior"],
+        url: "https://ether.stanford.edu",
+        popular: true,
+      },
+      {
         title: "OpenAnesthesia",
         by: "Affiliated with the ASA",
         blurb:
@@ -337,9 +346,9 @@ export const startHere = {
     "OpenAnesthesia",
   ],
   resident: [
+    "Stanford Anesthesia CA-1 Guide",
     "Morgan & Mikhail's Clinical Anesthesiology",
     "MGH Handbook",
-    "ACCRAC podcast",
   ],
   boards: [
     "Anesthesiology Core Review (ACR) Part 1 & 2",
