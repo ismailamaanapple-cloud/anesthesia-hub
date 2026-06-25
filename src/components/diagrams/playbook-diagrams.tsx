@@ -10,8 +10,11 @@ import type { FC } from "react";
 
 type DiagramProps = { className?: string };
 
+// On phones the SVG keeps a minimum width so its labels stay legible; the
+// wrapper (see <Diagram>) lets it scroll horizontally. On sm+ it fits the
+// container normally.
 const svgBase =
-  "w-full h-auto rounded-2xl border border-border bg-gradient-to-br from-muted/30 to-background";
+  "h-auto w-full min-w-[640px] sm:min-w-0 rounded-2xl border border-border bg-gradient-to-br from-muted/30 to-background";
 
 /* ------------------------------------------------------------------ */
 /* 1. OR / Anesthesia workstation layout (top-down)                    */
@@ -197,11 +200,11 @@ const Monitors: FC<DiagramProps> = () => (
     </g>
     {/* 4 Capnography - after airway */}
     <g>
-      <rect x="600" y="40" width="150" height="60" rx="9" className="fill-primary/10 stroke-primary" />
-      <circle cx="617" cy="62" r="11" className="fill-primary" /><text x="617" y="66" textAnchor="middle" className="fill-primary-foreground" fontSize="12" fontWeight="700">4</text>
-      <text x="635" y="58" className="fill-foreground" fontSize="11" fontWeight="700">Capnography</text>
-      <text x="635" y="74" className="fill-muted-foreground" fontSize="9.5">+ temp, BIS, TOF</text>
-      <text x="635" y="90" className="fill-muted-foreground" fontSize="9.5">added after the airway is in</text>
+      <rect x="582" y="40" width="168" height="60" rx="9" className="fill-primary/10 stroke-primary" />
+      <circle cx="599" cy="62" r="11" className="fill-primary" /><text x="599" y="66" textAnchor="middle" className="fill-primary-foreground" fontSize="12" fontWeight="700">4</text>
+      <text x="617" y="58" className="fill-foreground" fontSize="11" fontWeight="700">Capnography</text>
+      <text x="617" y="74" className="fill-muted-foreground" fontSize="9.5">+ temp, BIS, TOF</text>
+      <text x="617" y="90" className="fill-muted-foreground" fontSize="9.5">added once airway is in</text>
     </g>
 
     <text x="150" y="160" textAnchor="middle" className="fill-muted-foreground" fontSize="11" fontWeight="600">Pre-induction monitors, in order →</text>
@@ -408,8 +411,10 @@ const EttDepth: FC<DiagramProps> = () => (
     <rect x="352" y="20" width="26" height="180" rx="6" className="fill-accent/25 stroke-accent" strokeWidth="2" />
     {/* cuff */}
     <ellipse cx="365" cy="180" rx="26" ry="16" className="fill-accent/50 stroke-accent" strokeWidth="2" />
-    <text x="410" y="184" className="fill-foreground" fontSize="11" fontWeight="600">cuff — mid-trachea</text>
-    <text x="410" y="200" className="fill-muted-foreground" fontSize="9.5">tip ~3–4 cm above carina</text>
+    {/* cuff label sits left of the trachea so it never collides with the depth panel */}
+    <line x1="312" y1="182" x2="340" y2="182" className="stroke-border" strokeWidth="1.5" />
+    <text x="305" y="178" textAnchor="end" className="fill-foreground" fontSize="11" fontWeight="600">cuff — mid-trachea</text>
+    <text x="305" y="194" textAnchor="end" className="fill-muted-foreground" fontSize="9.5">tip ~3–4 cm above carina</text>
 
     {/* lip line */}
     <line x1="300" y1="110" x2="440" y2="110" className="stroke-destructive" strokeWidth="2" strokeDasharray="6 4" />
@@ -424,8 +429,7 @@ const EttDepth: FC<DiagramProps> = () => (
     <text x="520" y="206" className="fill-muted-foreground" fontSize="10.5">Confirm: EtCO₂ + bilateral breath</text>
     <text x="520" y="222" className="fill-muted-foreground" fontSize="10.5">sounds + chest rise, then tape.</text>
 
-    <text x="120" y="150" textAnchor="middle" className="fill-muted-foreground" fontSize="10.5" fontStyle="italic">Always reconfirm depth</text>
-    <text x="120" y="168" textAnchor="middle" className="fill-muted-foreground" fontSize="10.5" fontStyle="italic">after positioning the patient.</text>
+    <text x="300" y="318" textAnchor="middle" className="fill-muted-foreground" fontSize="10.5" fontStyle="italic">Always reconfirm depth after repositioning the patient.</text>
   </svg>
 );
 
@@ -606,5 +610,14 @@ export const playbookDiagrams: Record<string, FC<DiagramProps>> = {
 export function Diagram({ name }: { name: string }) {
   const Cmp = playbookDiagrams[name];
   if (!Cmp) return null;
-  return <Cmp />;
+  return (
+    <div>
+      <div className="overflow-x-auto sm:overflow-visible rounded-2xl [-webkit-overflow-scrolling:touch]">
+        <Cmp />
+      </div>
+      <div className="mt-1.5 pr-1 text-right text-[10px] text-muted-foreground/70 sm:hidden">
+        swipe diagram horizontally →
+      </div>
+    </div>
+  );
 }

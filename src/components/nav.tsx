@@ -110,7 +110,7 @@ export function Nav() {
           </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden lg:flex items-center gap-0.5">
+          <nav className="hidden xl:flex items-center gap-0.5">
             {links.map((l) => {
               const active = path === l.href || path.startsWith(l.href + "/");
               return (
@@ -118,7 +118,7 @@ export function Nav() {
                   key={l.href}
                   href={l.href}
                   className={cn(
-                    "px-2.5 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1.5",
+                    "px-2 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-1.5 whitespace-nowrap",
                     active
                       ? "bg-primary/10 text-primary"
                       : "text-muted-foreground hover:text-foreground hover:bg-muted/70"
@@ -137,7 +137,7 @@ export function Nav() {
               onClick={triggerSearch}
               aria-label="Search"
               title="Search (⌘K)"
-              className="hidden md:inline-flex items-center gap-2 h-9 px-3 rounded-lg border border-border bg-muted/40 hover:bg-muted text-xs text-muted-foreground transition-colors"
+              className="hidden 2xl:inline-flex items-center gap-2 h-9 px-3 rounded-lg border border-border bg-muted/40 hover:bg-muted text-xs text-muted-foreground transition-colors"
             >
               <Search className="h-3.5 w-3.5" />
               <span>Search</span>
@@ -148,7 +148,7 @@ export function Nav() {
             <button
               onClick={triggerSearch}
               aria-label="Search"
-              className="md:hidden h-9 w-9 inline-flex items-center justify-center rounded-lg border border-border hover:bg-muted transition-colors"
+              className="2xl:hidden h-9 w-9 inline-flex items-center justify-center rounded-lg border border-border hover:bg-muted transition-colors"
             >
               <Search className="h-4 w-4" />
             </button>
@@ -169,7 +169,7 @@ export function Nav() {
               Ask AI
             </Link>
             <button
-              className="lg:hidden h-9 w-9 inline-flex items-center justify-center rounded-lg border border-border hover:bg-muted transition-colors"
+              className="xl:hidden h-9 w-9 inline-flex items-center justify-center rounded-lg border border-border hover:bg-muted transition-colors"
               onClick={() => setOpen(!open)}
               aria-label="Menu"
             >
@@ -181,8 +181,8 @@ export function Nav() {
         {/* Mobile drawer */}
         <div
           className={cn(
-            "lg:hidden overflow-hidden transition-all duration-300",
-            open ? "max-h-[400px] pb-4" : "max-h-0"
+            "xl:hidden overflow-hidden transition-all duration-300",
+            open ? "max-h-[560px] pb-4" : "max-h-0"
           )}
         >
           <div className="grid gap-1">
