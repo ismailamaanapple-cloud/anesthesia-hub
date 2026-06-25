@@ -378,7 +378,7 @@ There's rarely one 'right' mode — pick the one whose **guaranteed variable** m
     readMinutes: 8,
     keyPoints: [
       "Every syringe gets a label — drug, concentration, your initials, date/time. No exceptions, ever.",
-      "Syringe size is matched to the volume you'll actually give: propofol → 20 mL, fentanyl → 10 mL, glyco → 3 mL.",
+      "Syringe size is matched to the volume you'll give: propofol → 20 mL, fentanyl → 3–5 mL (50 mcg/mL), succinylcholine → 10 mL, glyco → 3 mL.",
       "Labels follow the ISO 26825 color classes: yellow=induction, blue=opioid, red=relaxant, violet=pressor, orange=benzo, green=anticholinergic.",
       "Read the vial label THREE times: picking it up, drawing it up, throwing it away.",
       "An unlabeled syringe is a hazard — if you find one and don't know what's in it, discard it.",
@@ -388,12 +388,29 @@ There's rarely one 'right' mode — pick the one whose **guaranteed variable** m
         heading: "Match the syringe to the dose",
         body: `Syringe size isn't arbitrary — you pick the size that fits the **volume and titration** of the drug. Too big and you can't dose precisely; too small and you're constantly refilling.
 
-This is the typical adult induction kit. Concentrations are standard stock — **always confirm against your vial.**`,
+This is a typical adult set, induction through reversal. **Concentrations are standard stock — always confirm against your vial,** and exact syringe sizes vary by institution.
+
+| Drug | Syringe | Concentration | Class |
+|---|---|---|---|
+| Propofol | 20 mL | 10 mg/mL | Induction |
+| Fentanyl | 3–5 mL | 50 mcg/mL | Opioid |
+| Midazolam | 3 mL | 1 mg/mL | Benzodiazepine |
+| Lidocaine | 5 mL | 10 mg/mL (1%) | Local — blunts propofol burn |
+| Succinylcholine | 10 mL | 20 mg/mL | Depolarizing relaxant |
+| Rocuronium | 5 mL | 10 mg/mL | Non-depolarizing relaxant |
+| Neostigmine (+ glyco) | 5 mL | 1 mg/mL | Reversal |
+| Sugammadex | 2–5 mL | 100 mg/mL | Reversal (roc/vec) |
+| Phenylephrine | 10 mL | 100 mcg/mL | Vasopressor |
+| Ephedrine | 10 mL | 5 mg/mL | Vasopressor |
+| Glycopyrrolate | 3 mL | 0.2 mg/mL | Anticholinergic |
+
+> **Fentanyl** is drawn **undiluted at 50 mcg/mL** (from a 100 mcg/2 mL or 250 mcg/5 mL vial) into a small **3–5 mL** syringe — not a big, diluted one. **Reversal** (neostigmine + glycopyrrolate, or sugammadex) is usually drawn up toward the end of the case.`,
         diagram: "syringes",
         diagramCaption:
-          "Typical adult induction setup. The colored band is the drug class; the size matches how much you'll give.",
+          "Typical adult setup, induction → reversal. The colored band is the drug class (reversal agents are red with stripes); the size matches how much you'll give.",
         pearls: [
           "Propofol comes in a 20 mL syringe because a 70 kg induction dose (~140 mg = 14 mL) plus titration fits perfectly.",
+          "Succinylcholine is 20 mg/mL — double rocuronium's 10 mg/mL — so the same volume is a very different dose. Read the label, not the volume.",
           "Keep pressors in 10 mL syringes diluted to round numbers (phenylephrine 100 mcg/mL) so the math is instant in an emergency.",
         ],
       },

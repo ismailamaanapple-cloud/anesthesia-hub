@@ -100,12 +100,16 @@ const syringeRows: {
   band: string; // tailwind fill class
   label: string;
   textOnBand?: string;
+  striped?: boolean; // ISO: relaxant antagonists are red w/ diagonal stripes
 }[] = [
   { drug: "Propofol", size: "20 mL", conc: "10 mg/mL", band: "fill-yellow-400", label: "Induction agent", textOnBand: "fill-black" },
-  { drug: "Lidocaine (for propofol burn)", size: "5 mL", conc: "10–20 mg", band: "fill-gray-400", label: "Local anesthetic", textOnBand: "fill-black" },
-  { drug: "Fentanyl", size: "10 mL", conc: "10 mcg/mL", band: "fill-sky-500", label: "Opioid", textOnBand: "fill-white" },
+  { drug: "Fentanyl", size: "3–5 mL", conc: "50 mcg/mL", band: "fill-sky-500", label: "Opioid", textOnBand: "fill-white" },
   { drug: "Midazolam", size: "3 mL", conc: "1 mg/mL", band: "fill-orange-400", label: "Benzodiazepine", textOnBand: "fill-black" },
-  { drug: "Rocuronium / Succinylcholine", size: "10 mL", conc: "10 mg/mL", band: "fill-red-500", label: "Muscle relaxant", textOnBand: "fill-white" },
+  { drug: "Lidocaine", size: "5 mL", conc: "10 mg/mL (1%)", band: "fill-gray-400", label: "Local anesthetic", textOnBand: "fill-black" },
+  { drug: "Succinylcholine", size: "10 mL", conc: "20 mg/mL", band: "fill-red-500", label: "Depolarizing relaxant", textOnBand: "fill-white" },
+  { drug: "Rocuronium", size: "5 mL", conc: "10 mg/mL", band: "fill-red-500", label: "Non-depol. relaxant", textOnBand: "fill-white" },
+  { drug: "Neostigmine", size: "5 mL", conc: "1 mg/mL", band: "fill-red-500", label: "Reversal (+ glyco)", textOnBand: "fill-white", striped: true },
+  { drug: "Sugammadex", size: "2–5 mL", conc: "100 mg/mL", band: "fill-red-500", label: "Reversal (roc/vec)", textOnBand: "fill-white", striped: true },
   { drug: "Phenylephrine", size: "10 mL", conc: "100 mcg/mL", band: "fill-violet-500", label: "Vasopressor", textOnBand: "fill-white" },
   { drug: "Ephedrine", size: "10 mL", conc: "5 mg/mL", band: "fill-violet-500", label: "Vasopressor", textOnBand: "fill-white" },
   { drug: "Glycopyrrolate", size: "3 mL", conc: "0.2 mg/mL", band: "fill-green-500", label: "Anticholinergic", textOnBand: "fill-white" },
@@ -115,16 +119,23 @@ const Syringes: FC<DiagramProps> = () => {
   const rowH = 46;
   const top = 54;
   return (
-    <svg viewBox={`0 0 760 ${top + syringeRows.length * rowH + 30}`} className={svgBase} role="img" aria-label="Common induction syringes with their typical sizes and ISO color-coded labels">
+    <svg viewBox={`0 0 760 ${top + syringeRows.length * rowH + 30}`} className={svgBase} role="img" aria-label="Common induction and reversal syringes with their typical sizes, concentrations and ISO color-coded labels">
+      <defs>
+        <pattern id="revStripe" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+          <line x1="0" y1="0" x2="0" y2="9" className="stroke-white" strokeWidth="3.5" strokeOpacity="0.45" />
+        </pattern>
+      </defs>
       <text x="24" y="32" className="fill-foreground" fontSize="15" fontWeight="700">Standard draw-up — size · concentration · color class</text>
       {syringeRows.map((r, i) => {
         const y = top + i * rowH;
         const cy = y + 18;
+        const vol = parseFloat(r.size); // first number in the size string
         return (
           <g key={i}>
             {/* color label band (the sticker on the syringe) */}
             <rect x="24" y={y} width="150" height="34" rx="6" className={`${r.band} stroke-border`} />
-            <text x="99" y={cy - 1} textAnchor="middle" className={r.textOnBand ?? "fill-black"} fontSize="10.5" fontWeight="700">{r.drug.split(" /")[0]}</text>
+            {r.striped && <rect x="24" y={y} width="150" height="34" rx="6" fill="url(#revStripe)" className="stroke-border" />}
+            <text x="99" y={cy - 1} textAnchor="middle" className={r.textOnBand ?? "fill-black"} fontSize="10.5" fontWeight="700">{r.drug}</text>
             <text x="99" y={cy + 12} textAnchor="middle" className={r.textOnBand ?? "fill-black"} fontSize="8.5">{r.label}</text>
 
             {/* syringe barrel */}
@@ -134,7 +145,7 @@ const Syringes: FC<DiagramProps> = () => {
               <line key={t} x1={196 + t * 30} y1={y + 4} x2={196 + t * 30} y2={y + 12} className="stroke-border" strokeWidth="1" />
             ))}
             {/* fill volume proportional-ish */}
-            <rect x="186" y={y + 4} width={Math.min(210, parseInt(r.size) * 9)} height="26" rx="4" className={`${r.band} opacity-30`} />
+            <rect x="186" y={y + 4} width={Math.min(210, Math.max(18, vol * 9))} height="26" rx="4" className={`${r.band} opacity-30`} />
             {/* plunger */}
             <rect x="406" y={y + 8} width="34" height="18" rx="2" className="fill-muted stroke-border" />
             <rect x="440" y={y + 12} width="22" height="10" rx="2" className="fill-muted-foreground/40" />
