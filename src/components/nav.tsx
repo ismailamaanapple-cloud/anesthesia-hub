@@ -13,6 +13,7 @@ import {
   BookMarked,
   Library,
   Siren,
+  Stethoscope,
   Menu,
   X,
   Search,
@@ -22,6 +23,7 @@ import { cn } from "@/lib/utils";
 
 const links = [
   { href: "/tutorials", label: "Tutorials", icon: BookMarked },
+  { href: "/playbook", label: "Playbook", icon: Stethoscope },
   { href: "/drugs", label: "Drugs", icon: Pill },
   { href: "/calculators", label: "Calcs", icon: Calculator },
   { href: "/emergency", label: "Emergency", icon: Siren },

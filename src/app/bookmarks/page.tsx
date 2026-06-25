@@ -8,6 +8,7 @@ import {
   BookMarked,
   BookOpen,
   Siren,
+  Stethoscope,
   Trash2,
   ArrowRight,
 } from "lucide-react";
@@ -20,6 +21,7 @@ const iconForKind: Record<BookmarkKind, React.ComponentType<{ className?: string
   tutorial: BookMarked,
   subspecialty: BookOpen,
   emergency: Siren,
+  playbook: Stethoscope,
 };
 
 const labelForKind: Record<BookmarkKind, string> = {
@@ -28,6 +30,7 @@ const labelForKind: Record<BookmarkKind, string> = {
   tutorial: "Tutorial",
   subspecialty: "Subspecialty",
   emergency: "Emergency",
+  playbook: "Playbook",
 };
 
 export default function BookmarksPage() {

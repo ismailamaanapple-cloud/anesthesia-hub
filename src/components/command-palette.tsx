@@ -15,10 +15,12 @@ import {
   X,
   Star,
   Library,
+  Stethoscope,
 } from "lucide-react";
 import { drugs } from "@/lib/drugs";
 import { calculators } from "@/lib/calculators";
 import { tutorials } from "@/lib/tutorials";
+import { playbookGuides } from "@/lib/playbook";
 import { subspecialties } from "@/lib/subspecialties";
 import { emergencies } from "@/lib/emergencies";
 import { resourceGroups } from "@/lib/resources";
@@ -66,6 +68,16 @@ function buildIndex(): Item[] {
       icon: BookMarked,
     });
   }
+  for (const g of playbookGuides) {
+    out.push({
+      id: `pb-${g.slug}`,
+      href: `/playbook/${g.slug}`,
+      title: g.title,
+      subtitle: `Playbook · Step ${g.number} · ${g.category}`,
+      group: "OR Playbook",
+      icon: Stethoscope,
+    });
+  }
   for (const s of subspecialties) {
     out.push({
       id: `sub-${s.slug}`,
@@ -105,6 +117,14 @@ function buildIndex(): Item[] {
       subtitle: "Browse 26 chapters",
       group: "Navigate",
       icon: BookMarked,
+    },
+    {
+      id: "nav-playbook",
+      href: "/playbook",
+      title: "OR Playbook",
+      subtitle: "Hands-on CA-1 rotation survival guide",
+      group: "Navigate",
+      icon: Stethoscope,
     },
     {
       id: "nav-drugs",

@@ -168,7 +168,7 @@ export default function Home() {
             Everything you need at the head of the bed
           </h2>
           <p className="mt-3 text-muted-foreground max-w-2xl mx-auto">
-            Seven coordinated tools that work the way clinicians actually think
+            Eight coordinated tools that work the way clinicians actually think
             — fast lookup, structured learning, and decision support.
           </p>
         </div>
@@ -180,6 +180,14 @@ export default function Home() {
             description="26 structured chapters covering everything from standard monitors to malignant hyperthermia — adapted from the Stanford CA-1 textbook."
             accent="from-primary to-accent"
             badge="26 chapters"
+          />
+          <FeatureCard
+            href="/playbook"
+            icon={Stethoscope}
+            title="OR Playbook"
+            description="The hands-on rotation survival guide they never teach in med school — room setup, drawing up drugs, monitors, patient transfer, lines & fluids, induction, intubation, extubation. With diagrams."
+            accent="from-teal-500 to-sky-500"
+            badge="CA-1 · with diagrams"
           />
           <FeatureCard
             href="/drugs"

@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 
-export type BookmarkKind = "drug" | "tutorial" | "calculator" | "subspecialty" | "emergency";
+export type BookmarkKind = "drug" | "tutorial" | "calculator" | "subspecialty" | "emergency" | "playbook";
 
 export type Bookmark = {
   kind: BookmarkKind;
