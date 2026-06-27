@@ -16,6 +16,20 @@ import {
   Gauge,
   ArrowUpFromLine,
   GraduationCap,
+  Layers,
+  Users,
+  Pill,
+  Zap,
+  HeartPulse,
+  FlaskConical,
+  Droplets,
+  ClipboardCheck,
+  ScanFace,
+  MessagesSquare,
+  Baby,
+  TriangleAlert,
+  Crosshair,
+  Route,
 } from "lucide-react";
 import { playbookGuides, playbookCategories } from "@/lib/playbook";
 import { cn } from "@/lib/utils";
@@ -29,6 +43,21 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Droplet,
   Brain,
   Wind,
+  GraduationCap,
+  Layers,
+  Users,
+  Pill,
+  Zap,
+  HeartPulse,
+  FlaskConical,
+  Droplets,
+  ClipboardCheck,
+  ScanFace,
+  MessagesSquare,
+  Baby,
+  TriangleAlert,
+  Crosshair,
+  Route,
 };
 
 export default function PlaybookPage() {

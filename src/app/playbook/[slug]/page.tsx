@@ -16,6 +16,20 @@ import {
   Settings2,
   Gauge,
   ArrowUpFromLine,
+  Layers,
+  GraduationCap,
+  Users,
+  Pill,
+  Zap,
+  HeartPulse,
+  FlaskConical,
+  Droplets,
+  ClipboardCheck,
+  ScanFace,
+  MessagesSquare,
+  Baby,
+  Crosshair,
+  Route,
 } from "lucide-react";
 import { playbookGuides, getPlaybookGuide } from "@/lib/playbook";
 import { Markdown } from "@/components/markdown";
@@ -32,6 +46,21 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Brain,
   Wind,
   Stethoscope,
+  Layers,
+  GraduationCap,
+  Users,
+  Pill,
+  Zap,
+  HeartPulse,
+  FlaskConical,
+  Droplets,
+  ClipboardCheck,
+  ScanFace,
+  MessagesSquare,
+  Baby,
+  TriangleAlert,
+  Crosshair,
+  Route,
 };
 
 export function generateStaticParams() {
@@ -199,6 +228,13 @@ export default async function PlaybookGuidePage({
           </section>
         ))}
       </article>
+
+      {/* Source credit */}
+      {g.credit && (
+        <p className="mt-8 text-xs text-muted-foreground/80 italic leading-relaxed border-l-2 border-border pl-3">
+          {g.credit}
+        </p>
+      )}
 
       {/* Section TOC */}
       <div className="mt-10 rounded-2xl border border-border bg-muted/40 p-5">
