@@ -14,6 +14,7 @@ import {
   Library,
   Siren,
   Stethoscope,
+  Mic,
   Menu,
   X,
   Search,
@@ -24,6 +25,7 @@ import { cn } from "@/lib/utils";
 const links = [
   { href: "/tutorials", label: "Tutorials", icon: BookMarked },
   { href: "/playbook", label: "Playbook", icon: Stethoscope },
+  { href: "/oral-boards", label: "Orals", icon: Mic },
   { href: "/drugs", label: "Drugs", icon: Pill },
   { href: "/calculators", label: "Calcs", icon: Calculator },
   { href: "/emergency", label: "Emergency", icon: Siren },
@@ -163,10 +165,10 @@ export function Nav() {
 
             <Link
               href="/ai-assistant"
-              className="hidden sm:inline-flex items-center gap-2 px-3.5 h-9 rounded-lg bg-foreground text-background text-sm font-medium hover:opacity-90 transition-opacity"
+              className="hidden sm:inline-flex items-center gap-2 px-3  2xl:px-3.5 h-9 rounded-lg bg-foreground text-background text-sm font-medium hover:opacity-90 transition-opacity"
             >
               <Brain className="h-4 w-4" />
-              Ask AI
+              <span className="hidden 2xl:inline">Ask AI</span>
             </Link>
             <button
               className="xl:hidden h-9 w-9 inline-flex items-center justify-center rounded-lg border border-border hover:bg-muted transition-colors"
@@ -182,7 +184,7 @@ export function Nav() {
         <div
           className={cn(
             "xl:hidden overflow-hidden transition-all duration-300",
-            open ? "max-h-[560px] pb-4" : "max-h-0"
+            open ? "max-h-[640px] pb-4" : "max-h-0"
           )}
         >
           <div className="grid gap-1">

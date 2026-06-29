@@ -16,11 +16,13 @@ import {
   Star,
   Library,
   Stethoscope,
+  Mic,
 } from "lucide-react";
 import { drugs } from "@/lib/drugs";
 import { calculators } from "@/lib/calculators";
 import { tutorials } from "@/lib/tutorials";
 import { playbookGuides } from "@/lib/playbook";
+import { oralCases } from "@/lib/oral-boards-data";
 import { subspecialties } from "@/lib/subspecialties";
 import { emergencies } from "@/lib/emergencies";
 import { resourceGroups } from "@/lib/resources";
@@ -78,6 +80,16 @@ function buildIndex(): Item[] {
       icon: Stethoscope,
     });
   }
+  for (const o of oralCases) {
+    out.push({
+      id: `oral-${o.slug}`,
+      href: `/oral-boards/${o.slug}`,
+      title: o.title,
+      subtitle: `Oral Boards · Case ${o.number} · ${o.category}`,
+      group: "Oral Boards",
+      icon: Mic,
+    });
+  }
   for (const s of subspecialties) {
     out.push({
       id: `sub-${s.slug}`,
@@ -125,6 +137,14 @@ function buildIndex(): Item[] {
       subtitle: "Hands-on CA-1 rotation survival guide",
       group: "Navigate",
       icon: Stethoscope,
+    },
+    {
+      id: "nav-oral-boards",
+      href: "/oral-boards",
+      title: "Oral Boards Trainer",
+      subtitle: "Voice-scored oral exam case practice",
+      group: "Navigate",
+      icon: Mic,
     },
     {
       id: "nav-drugs",

@@ -26,6 +26,7 @@ import {
   Wind,
   Droplets,
   Library,
+  Mic,
 } from "lucide-react";
 import { subspecialties } from "@/lib/subspecialties";
 import { questions } from "@/lib/questions";
@@ -168,7 +169,7 @@ export default function Home() {
             Everything you need at the head of the bed
           </h2>
           <p className="mt-3 text-muted-foreground max-w-2xl mx-auto">
-            Eight coordinated tools that work the way clinicians actually think
+            Nine coordinated tools that work the way clinicians actually think
             — fast lookup, structured learning, and decision support.
           </p>
         </div>
@@ -188,6 +189,14 @@ export default function Home() {
             description="The hands-on rotation survival guide they never teach in med school — room setup, drawing up drugs, monitors, patient transfer, lines & fluids, induction, intubation, extubation. With diagrams."
             accent="from-teal-500 to-sky-500"
             badge="CA-1 · with diagrams"
+          />
+          <FeatureCard
+            href="/oral-boards"
+            icon={Mic}
+            title="Oral Boards Trainer"
+            description="Practice high-yield oral exam cases out loud. Answer by voice, and we check whether you said the key phrases and safety steps — then track your best score."
+            accent="from-rose-500 to-orange-500"
+            badge="Voice-scored"
           />
           <FeatureCard
             href="/drugs"
