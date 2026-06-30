@@ -109,7 +109,7 @@ export const oralCases: CaseDef[] = [
         prompt: "What is happening and what do you do first?",
         phrases: [
           { text: "Recognize local anesthetic systemic toxicity", alts: ["last", "local anesthetic toxicity", "systemic toxicity"], critical: true },
-          { text: "Stop injecting the local anesthetic", alts: ["stop the injection", "stop the local"], critical: true },
+          { text: "Stop injecting the local anesthetic", alts: ["stop the injection", "stop the local", "stop injecting", "stop the infusion"], critical: true },
           { ...SAFETY.callHelp },
           { ...SAFETY.oxygen, text: "Airway and 100% oxygen", alts: ["secure the airway", "100 percent oxygen", "ventilate"] },
           { text: "Stop the seizure with a benzodiazepine", alts: ["benzodiazepine", "midazolam", "versed", "treat the seizure"] },
@@ -794,6 +794,505 @@ export const oralCases: CaseDef[] = [
           { text: "Avoid hypoxia and hypercarbia; ventilate to normocapnia", alts: ["avoid hypoxia", "normocapnia", "avoid hypercarbia", "ventilation"], critical: true },
           { text: "Lower ICP: head up, mannitol or hypertonic saline", alts: ["head up", "mannitol", "hypertonic saline", "lower icp"], critical: true },
           { text: "Maintain normoglycemia and normothermia; treat seizures", alts: ["glucose", "normoglycemia", "normothermia", "seizure prophylaxis"] },
+        ],
+      },
+    ],
+  },
+  /* ---------------------------------------------------------------- */
+  {
+    slug: "cardiac-tamponade",
+    number: 23,
+    category: "Cardiac",
+    title: "Cardiac Tamponade",
+    tagline: "Obstructive shock — keep them fast, full, and tight.",
+    icon: "HeartPulse",
+    color: "from-rose-500 to-red-500",
+    stem: "A patient with a pericardial effusion presents for a pericardial window. They are hypotensive and tachycardic with pulsus paradoxus and distended neck veins.",
+    sections: [
+      {
+        title: "Recognize & hemodynamic goals",
+        prompt: "What is your diagnosis and what are your hemodynamic goals?",
+        phrases: [
+          { text: "Recognize cardiac tamponade / obstructive shock", alts: ["tamponade", "obstructive shock", "pericardial tamponade"], critical: true },
+          { text: "Keep them full — maintain preload", alts: ["maintain preload", "keep them full", "fluids", "volume"], critical: true },
+          { text: "Keep them fast — avoid bradycardia", alts: ["avoid bradycardia", "keep the heart rate up", "maintain heart rate"], critical: true },
+          { text: "Maintain contractility and afterload", alts: ["maintain contractility", "maintain afterload", "maintain svr", "avoid myocardial depression"] },
+        ],
+      },
+      {
+        title: "Anesthetic plan",
+        prompt: "How will you induce this patient?",
+        phrases: [
+          { text: "Drain the effusion under local before general if possible", alts: ["local anesthesia", "drain before induction", "awake drainage", "prep and drape before induction"], critical: true },
+          { text: "Avoid positive-pressure ventilation until drained if feasible", alts: ["avoid positive pressure", "spontaneous ventilation", "maintain spontaneous breathing"] },
+          { text: "Use a hemodynamically stable induction (ketamine/etomidate)", alts: ["ketamine", "etomidate", "stable induction"], critical: true },
+          { text: "Have vasopressors and an arterial line ready", alts: ["vasopressors", "epinephrine", "arterial line", "a line"] },
+        ],
+      },
+    ],
+  },
+
+  /* ---------------------------------------------------------------- */
+  {
+    slug: "thyroid-storm",
+    number: 24,
+    category: "Endocrine",
+    title: "Thyroid Storm",
+    tagline: "Hyperthermia, tachycardia, and agitation in a hyperthyroid patient.",
+    icon: "Flame",
+    color: "from-orange-500 to-red-500",
+    stem: "An inadequately treated hyperthyroid patient develops fever to 40°C, a heart rate of 160, agitation, and hypotension intraoperatively.",
+    sections: [
+      {
+        title: "Recognize & differential",
+        prompt: "What is your diagnosis and how do you distinguish it?",
+        phrases: [
+          { text: "Suspect thyroid storm", alts: ["thyroid storm", "thyrotoxicosis"], critical: true },
+          { text: "Distinguish from malignant hyperthermia (no rigidity, EtCO₂ less elevated)", alts: ["rule out malignant hyperthermia", "not mh", "differentiate from mh"], critical: true },
+          { ...SAFETY.callHelp },
+        ],
+      },
+      {
+        title: "Treat",
+        prompt: "What is your treatment?",
+        phrases: [
+          { text: "Give a beta blocker (propranolol/esmolol)", alts: ["beta blocker", "propranolol", "esmolol", "control the heart rate"], critical: true },
+          { text: "Block synthesis with a thionamide (PTU/methimazole)", alts: ["ptu", "propylthiouracil", "methimazole", "thionamide"], critical: true },
+          { text: "Give iodine after the thionamide (Wolff–Chaikoff)", alts: ["iodine", "potassium iodide", "lugol"] },
+          { text: "Give corticosteroids", alts: ["steroids", "hydrocortisone", "corticosteroid"], critical: true },
+          { text: "Active cooling and supportive care", alts: ["cooling", "cool the patient", "supportive care", "fluids"] },
+        ],
+      },
+    ],
+  },
+
+  /* ---------------------------------------------------------------- */
+  {
+    slug: "carcinoid-crisis",
+    number: 25,
+    category: "Endocrine",
+    title: "Carcinoid Crisis",
+    tagline: "Flushing, bronchospasm, and labile BP on tumor manipulation.",
+    icon: "Activity",
+    color: "from-amber-500 to-yellow-500",
+    stem: "During resection of a carcinoid tumor, manipulation triggers severe flushing, bronchospasm, and wildly swinging blood pressure.",
+    sections: [
+      {
+        title: "Treat the crisis",
+        prompt: "What is happening and how do you treat it?",
+        phrases: [
+          { text: "Recognize carcinoid crisis from vasoactive mediator release", alts: ["carcinoid crisis", "carcinoid", "mediator release"], critical: true },
+          { text: "Give octreotide", alts: ["octreotide", "somatostatin"], critical: true },
+          { text: "Tell the surgeon to stop manipulating the tumor", alts: ["stop manipulating", "tell the surgeon", "stop the manipulation"], critical: true },
+          { text: "Support BP and treat bronchospasm", alts: ["fluids", "support blood pressure", "bronchodilator", "albuterol"] },
+        ],
+      },
+      {
+        title: "Avoid pitfalls",
+        prompt: "What do you avoid?",
+        phrases: [
+          { text: "Pre-treat with octreotide before induction", alts: ["preoperative octreotide", "pretreat with octreotide", "octreotide before surgery"], critical: true },
+          { text: "Avoid histamine-releasing drugs", alts: ["avoid histamine releasing", "avoid morphine", "avoid atracurium", "avoid histamine"] },
+          { text: "Avoid catecholamines which can worsen the crisis", alts: ["avoid catecholamines", "avoid epinephrine", "use octreotide instead of pressors"] },
+        ],
+      },
+    ],
+  },
+
+  /* ---------------------------------------------------------------- */
+  {
+    slug: "turp-syndrome",
+    number: 26,
+    category: "Crisis",
+    title: "TURP Syndrome",
+    tagline: "Confusion and hyponatremia from irrigation fluid absorption.",
+    icon: "Droplet",
+    color: "from-cyan-500 to-blue-500",
+    stem: "During a long transurethral resection of the prostate under spinal anesthesia, the patient becomes confused, restless, bradycardic, and hypertensive.",
+    sections: [
+      {
+        title: "Recognize",
+        prompt: "What is happening?",
+        phrases: [
+          { text: "Suspect TURP syndrome from irrigation fluid absorption", alts: ["turp syndrome", "irrigation fluid absorption", "fluid absorption"], critical: true },
+          { text: "Recognize dilutional hyponatremia", alts: ["hyponatremia", "low sodium", "dilutional"], critical: true },
+          { text: "Tell the surgeon to stop / finish quickly", alts: ["tell the surgeon", "stop the resection", "finish the case"], critical: true },
+          { text: "Send a sodium level / labs", alts: ["check sodium", "sodium level", "labs", "abg"] },
+        ],
+      },
+      {
+        title: "Treat",
+        prompt: "How do you manage it?",
+        phrases: [
+          { text: "Restrict free water and give a loop diuretic", alts: ["fluid restriction", "furosemide", "loop diuretic", "diuresis"], critical: true },
+          { text: "Treat severe/symptomatic hyponatremia with hypertonic saline (correct slowly)", alts: ["hypertonic saline", "3 percent saline", "correct slowly", "avoid rapid correction"], critical: true },
+          { text: "Support the airway if seizing or obtunded", alts: ["secure the airway", "intubate", "treat seizures", "support the airway"] },
+        ],
+      },
+    ],
+  },
+
+  /* ---------------------------------------------------------------- */
+  {
+    slug: "one-lung-ventilation-hypoxia",
+    number: 27,
+    category: "Respiratory",
+    title: "Hypoxemia on One-Lung Ventilation",
+    tagline: "Desaturation during thoracic surgery with a double-lumen tube.",
+    icon: "Wind",
+    color: "from-sky-500 to-indigo-500",
+    stem: "During a thoracotomy on one-lung ventilation, the SpO₂ drifts down to 85%.",
+    sections: [
+      {
+        title: "First steps",
+        prompt: "What is your immediate response?",
+        phrases: [
+          { ...SAFETY.oxygen, text: "Increase FiO₂ to 100%", alts: ["100 percent oxygen", "increase fio2", "fio2 1 0"], critical: true },
+          { text: "Confirm double-lumen tube position with the bronchoscope", alts: ["check tube position", "bronchoscope", "confirm placement", "fiberoptic"], critical: true },
+          { text: "Hand-ventilate and check compliance / suction secretions", alts: ["hand ventilate", "suction", "check compliance"] },
+        ],
+      },
+      {
+        title: "Optimize oxygenation",
+        prompt: "It persists. What maneuvers?",
+        phrases: [
+          { text: "Apply CPAP to the non-dependent (operative) lung", alts: ["cpap to the nondependent lung", "cpap to the operative lung", "cpap"], critical: true },
+          { text: "Apply PEEP to the dependent (ventilated) lung", alts: ["peep to the dependent lung", "peep"], critical: true },
+          { text: "Recruit the dependent lung", alts: ["recruitment", "recruit the lung"] },
+          { text: "Resume two-lung ventilation if severe / ask surgeon to clamp PA", alts: ["two lung ventilation", "resume two lung", "clamp the pulmonary artery", "reinflate"], critical: true },
+        ],
+      },
+    ],
+  },
+
+  /* ---------------------------------------------------------------- */
+  {
+    slug: "diabetic-ketoacidosis",
+    number: 28,
+    category: "Endocrine",
+    title: "Diabetic Ketoacidosis for Urgent Surgery",
+    tagline: "Acidosis, dehydration, and electrolyte derangement.",
+    icon: "Droplets",
+    color: "from-amber-500 to-orange-500",
+    stem: "A type-1 diabetic with abdominal sepsis needs urgent surgery. Glucose is 480, the patient is acidotic and dehydrated, and potassium is 5.8.",
+    sections: [
+      {
+        title: "Resuscitate first",
+        prompt: "How do you prepare this patient?",
+        phrases: [
+          { text: "Optimize before surgery if time allows", alts: ["optimize first", "resuscitate before surgery", "delay if possible"], critical: true },
+          { text: "Aggressive IV fluid resuscitation", alts: ["iv fluids", "fluid resuscitation", "rehydrate", "isotonic fluids"], critical: true },
+          { text: "Start an insulin infusion", alts: ["insulin infusion", "insulin drip", "iv insulin"], critical: true },
+          { text: "Correct potassium and electrolytes carefully", alts: ["potassium", "replace potassium", "electrolytes", "correct electrolytes"], critical: true },
+        ],
+      },
+      {
+        title: "Anesthetic management",
+        prompt: "How do you manage anesthesia?",
+        phrases: [
+          { text: "Treat as a full stomach — rapid sequence induction", alts: ["rapid sequence induction", "rsi", "full stomach", "aspiration risk"], critical: true },
+          { text: "Monitor glucose, potassium, and acid-base frequently", alts: ["monitor glucose", "check potassium", "abg", "blood gas", "ketones"] },
+          { text: "Avoid lactate-containing and dextrose-free over-correction; watch ventilation/acidosis", alts: ["avoid worsening acidosis", "maintain minute ventilation", "watch the acidosis"] },
+        ],
+      },
+    ],
+  },
+
+  /* ---------------------------------------------------------------- */
+  {
+    slug: "septic-shock",
+    number: 29,
+    category: "Crisis",
+    title: "Septic Shock",
+    tagline: "Vasodilated, hypotensive, and hypoperfused for source control.",
+    icon: "Siren",
+    color: "from-rose-500 to-red-500",
+    stem: "A patient with perforated bowel and septic shock needs an emergent laparotomy. They are hypotensive despite fluids, tachycardic, and lactate is 6.",
+    sections: [
+      {
+        title: "Resuscitate",
+        prompt: "How do you resuscitate this patient?",
+        phrases: [
+          { text: "Give IV fluid resuscitation", alts: ["fluids", "fluid resuscitation", "crystalloid", "volume"], critical: true },
+          { text: "Start norepinephrine as the first-line vasopressor", alts: ["norepinephrine", "levophed", "vasopressor", "pressor"], critical: true },
+          { text: "Give broad-spectrum antibiotics early", alts: ["antibiotics", "broad spectrum", "early antibiotics"], critical: true },
+          { text: "Achieve source control with the surgeon", alts: ["source control", "tell the surgeon", "drain the source"], critical: true },
+        ],
+      },
+      {
+        title: "Anesthetic plan",
+        prompt: "How do you induce and monitor?",
+        phrases: [
+          { text: "Use a hemodynamically stable induction (etomidate/ketamine), reduced dose", alts: ["etomidate", "ketamine", "reduce the induction dose", "stable induction"], critical: true },
+          { text: "Treat as a full stomach with RSI", alts: ["rapid sequence", "rsi", "full stomach"], critical: true },
+          { text: "Arterial line, central access, and lactate/urine output goals", alts: ["arterial line", "central line", "lactate", "urine output", "invasive monitoring"] },
+          { text: "Consider stress-dose steroids if refractory", alts: ["stress dose steroids", "hydrocortisone", "steroids"] },
+        ],
+      },
+    ],
+  },
+
+  /* ---------------------------------------------------------------- */
+  {
+    slug: "anticipated-difficult-airway",
+    number: 30,
+    category: "Airway",
+    title: "Anticipated Difficult Airway",
+    tagline: "A patient with red-flag airway findings — plan before you induce.",
+    icon: "Wind",
+    color: "from-orange-500 to-amber-500",
+    stem: "A patient with a large neck mass, limited mouth opening, and prior radiation needs surgery. The airway exam predicts difficulty.",
+    sections: [
+      {
+        title: "Plan & prepare",
+        prompt: "How do you approach this airway?",
+        phrases: [
+          { text: "Follow the ASA difficult airway algorithm with a plan and backups", alts: ["difficult airway algorithm", "asa algorithm", "have a backup plan", "plan a b c"], critical: true },
+          { text: "Maintain spontaneous ventilation — do not paralyze a predicted difficult airway", alts: ["maintain spontaneous ventilation", "do not paralyze", "keep them breathing"], critical: true },
+          { text: "Have difficult airway equipment and skilled help available", alts: ["difficult airway cart", "video laryngoscope", "skilled help", "fiberoptic"], critical: true },
+          { text: "Have a surgeon ready for a surgical airway", alts: ["surgical airway backup", "ent in the room", "tracheostomy backup", "double set up"] },
+        ],
+      },
+      {
+        title: "Technique",
+        prompt: "What is your primary technique?",
+        phrases: [
+          { text: "Awake fiberoptic intubation", alts: ["awake fiberoptic", "awake intubation", "awake fibreoptic"], critical: true },
+          { text: "Topicalize the airway and give an antisialagogue", alts: ["topicalize", "topical lidocaine", "glycopyrrolate", "antisialagogue", "dry the airway"], critical: true },
+          { text: "Sedate while preserving ventilation (e.g., dexmedetomidine)", alts: ["light sedation", "dexmedetomidine", "preserve ventilation", "minimal sedation"] },
+          { text: "Confirm placement with EtCO₂ before inducing", alts: ["etco2", "confirm placement", "end tidal"], critical: true },
+        ],
+      },
+    ],
+  },
+
+  /* ---------------------------------------------------------------- */
+  {
+    slug: "delayed-emergence",
+    number: 31,
+    category: "Crisis",
+    title: "Delayed Emergence",
+    tagline: "The patient won't wake up at the end of the case.",
+    icon: "Activity",
+    color: "from-slate-500 to-indigo-500",
+    stem: "Thirty minutes after a routine general anesthetic the patient remains unresponsive and is not breathing adequately.",
+    sections: [
+      {
+        title: "Systematic differential",
+        prompt: "How do you work this up?",
+        phrases: [
+          { text: "Confirm the anesthetic is off and enough time has passed", alts: ["turn off the anesthetic", "vapor is off", "confirm drugs are off"], critical: true },
+          { text: "Check for residual drugs — opioids, benzodiazepines, paralytics", alts: ["residual opioid", "residual paralysis", "residual neuromuscular blockade", "benzodiazepine", "check twitches"], critical: true },
+          { text: "Check the train-of-four / reverse residual paralysis", alts: ["train of four", "tof", "reverse paralysis", "sugammadex", "neostigmine"], critical: true },
+          { text: "Rule out metabolic causes — glucose, electrolytes, CO₂, temperature", alts: ["hypoglycemia", "check glucose", "electrolytes", "hypercarbia", "hypothermia", "sodium"], critical: true },
+        ],
+      },
+      {
+        title: "Rule out the dangerous causes",
+        prompt: "What must you not miss?",
+        phrases: [
+          { text: "Consider hypoxia and hypercarbia", alts: ["hypoxia", "hypercarbia", "check the blood gas", "abg"], critical: true },
+          { text: "Consider an intracranial event (stroke) — get imaging if focal", alts: ["stroke", "intracranial event", "ct head", "neuro exam", "imaging"], critical: true },
+          { text: "Give targeted reversal (naloxone, flumazenil) cautiously if indicated", alts: ["naloxone", "flumazenil", "reversal agent"] },
+        ],
+      },
+    ],
+  },
+
+  /* ---------------------------------------------------------------- */
+  {
+    slug: "postop-reintubation",
+    number: 32,
+    category: "Respiratory",
+    title: "Post-op Respiratory Failure",
+    tagline: "Hypoxia and obstruction in PACU after extubation.",
+    icon: "Wind",
+    color: "from-sky-500 to-blue-500",
+    stem: "In the PACU your recently extubated patient becomes hypoxic and obstructed with paradoxical breathing and a falling SpO₂.",
+    sections: [
+      {
+        title: "Rescue the airway",
+        prompt: "What is your immediate response?",
+        phrases: [
+          { ...SAFETY.callHelp },
+          { ...SAFETY.oxygen },
+          { text: "Open the airway — jaw thrust, oral/nasal airway, bag-mask", alts: ["jaw thrust", "oral airway", "bag mask", "open the airway", "positive pressure"], critical: true },
+          { text: "Identify the cause — residual paralysis, opioid, laryngospasm, obstruction", alts: ["residual paralysis", "residual neuromuscular blockade", "opioid", "laryngospasm", "obstruction", "osa"], critical: true },
+        ],
+      },
+      {
+        title: "Treat & escalate",
+        prompt: "How do you treat and when do you reintubate?",
+        phrases: [
+          { text: "Reverse residual paralysis or opioids if indicated", alts: ["reverse paralysis", "sugammadex", "naloxone", "reversal"], critical: true },
+          { text: "Reintubate if the patient cannot protect or ventilate", alts: ["reintubate", "reintubation", "secure the airway"], critical: true },
+          { text: "Consider negative-pressure pulmonary edema", alts: ["negative pressure pulmonary edema", "pulmonary edema", "nppe"] },
+        ],
+      },
+    ],
+  },
+
+  /* ---------------------------------------------------------------- */
+  {
+    slug: "pediatric-epiglottitis",
+    number: 33,
+    category: "Pediatrics",
+    title: "Pediatric Epiglottitis",
+    tagline: "The drooling, toxic child with a critical airway.",
+    icon: "Siren",
+    color: "from-pink-500 to-red-500",
+    stem: "A 4-year-old presents toxic-appearing, drooling, leaning forward (tripod position), with stridor and a high fever.",
+    sections: [
+      {
+        title: "Keep the child calm",
+        prompt: "What are the principles before the airway?",
+        phrases: [
+          { text: "Recognize epiglottitis — do not agitate the child", alts: ["epiglottitis", "do not agitate", "keep the child calm", "do not upset the child"], critical: true },
+          { text: "Avoid instrumenting the airway / IVs until in the OR", alts: ["no iv until or", "do not instrument", "defer the iv", "no examination of the throat"], critical: true },
+          { text: "Keep the parent present and the child upright", alts: ["parent present", "keep upright", "let the child sit up"] },
+          { text: "Go to the OR with ENT and a surgical airway backup", alts: ["ent", "surgeon ready", "tracheostomy backup", "surgical airway backup", "operating room"], critical: true },
+        ],
+      },
+      {
+        title: "Secure the airway",
+        prompt: "How will you secure the airway?",
+        phrases: [
+          { text: "Inhalational induction with the child sitting up, spontaneous ventilation", alts: ["inhalational induction", "sevoflurane", "mask induction", "spontaneous ventilation", "keep them breathing"], critical: true },
+          { text: "Do not give a paralytic", alts: ["no paralytic", "do not paralyze", "avoid muscle relaxant"], critical: true },
+          { text: "Intubate once deep, with a smaller tube ready", alts: ["intubate when deep", "smaller tube", "have a smaller tube"], critical: true },
+          { text: "Be ready for rigid bronch / surgical airway if you fail", alts: ["rigid bronchoscopy", "surgical airway", "tracheostomy"] },
+        ],
+      },
+    ],
+  },
+
+  /* ---------------------------------------------------------------- */
+  {
+    slug: "pyloric-stenosis",
+    number: 34,
+    category: "Pediatrics",
+    title: "Pyloric Stenosis",
+    tagline: "A medical, not surgical, emergency — fix the chemistry first.",
+    icon: "Droplet",
+    color: "from-pink-500 to-rose-500",
+    stem: "A 5-week-old with projectile vomiting is scheduled for pyloromyotomy. Labs show a hypochloremic, hypokalemic metabolic alkalosis.",
+    sections: [
+      {
+        title: "Optimize first",
+        prompt: "Is this an emergency? What do you do first?",
+        phrases: [
+          { text: "This is a medical emergency, not a surgical one — resuscitate first", alts: ["medical emergency not surgical", "optimize first", "not a surgical emergency", "delay surgery"], critical: true },
+          { text: "Correct the hypochloremic hypokalemic metabolic alkalosis", alts: ["metabolic alkalosis", "correct the alkalosis", "hypochloremic", "hypokalemic"], critical: true },
+          { text: "Rehydrate with fluids and replace electrolytes (chloride, potassium)", alts: ["fluids", "rehydrate", "replace potassium", "replace chloride", "normal saline"], critical: true },
+        ],
+      },
+      {
+        title: "Airway management",
+        prompt: "How do you secure the airway?",
+        phrases: [
+          { text: "Suction the stomach with an orogastric tube first", alts: ["suction the stomach", "orogastric tube", "empty the stomach", "ng tube"], critical: true },
+          { text: "Treat as a full stomach — rapid sequence induction", alts: ["rapid sequence", "rsi", "full stomach"], critical: true },
+          { text: "Watch for postoperative apnea (alkalosis/CSF)", alts: ["postoperative apnea", "apnea monitoring", "postop apnea"] },
+        ],
+      },
+    ],
+  },
+
+  /* ---------------------------------------------------------------- */
+  {
+    slug: "sickle-cell-disease",
+    number: 35,
+    category: "Crisis",
+    title: "Sickle Cell Disease",
+    tagline: "Avoid the triggers of sickling perioperatively.",
+    icon: "Droplets",
+    color: "from-red-500 to-rose-600",
+    stem: "A patient with sickle cell disease presents for cholecystectomy. You are planning to avoid a perioperative crisis.",
+    sections: [
+      {
+        title: "Avoid sickling triggers",
+        prompt: "What are your management priorities?",
+        phrases: [
+          { text: "Avoid hypoxia — maintain good oxygenation", alts: ["avoid hypoxia", "maintain oxygenation", "supplemental oxygen"], critical: true },
+          { text: "Avoid hypothermia — keep the patient warm", alts: ["avoid hypothermia", "keep warm", "maintain temperature", "warm the patient"], critical: true },
+          { text: "Avoid dehydration — keep well hydrated", alts: ["avoid dehydration", "hydrate", "maintain hydration", "fluids"], critical: true },
+          { text: "Avoid acidosis and treat pain (avoid stress)", alts: ["avoid acidosis", "treat pain", "avoid stress", "adequate analgesia"], critical: true },
+        ],
+      },
+      {
+        title: "Transfusion & monitoring",
+        prompt: "What about transfusion and tourniquets?",
+        phrases: [
+          { text: "Consider preoperative transfusion to target hemoglobin", alts: ["preoperative transfusion", "transfuse to target", "simple transfusion", "exchange transfusion"], critical: true },
+          { text: "Avoid tourniquets when possible", alts: ["avoid tourniquet", "no tourniquet", "tourniquet cautiously"] },
+          { text: "Watch for acute chest syndrome postoperatively", alts: ["acute chest syndrome", "acute chest", "incentive spirometry"] },
+        ],
+      },
+    ],
+  },
+
+  /* ---------------------------------------------------------------- */
+  {
+    slug: "myasthenia-gravis",
+    number: 36,
+    category: "Neuro",
+    title: "Myasthenia Gravis",
+    tagline: "Sensitive to non-depolarizers, resistant to succinylcholine.",
+    icon: "Zap",
+    color: "from-violet-500 to-indigo-500",
+    stem: "A patient with myasthenia gravis presents for a thymectomy. You are planning the anesthetic and the airway.",
+    sections: [
+      {
+        title: "Muscle relaxant strategy",
+        prompt: "How will you manage neuromuscular blockade?",
+        phrases: [
+          { text: "Patients are very sensitive to non-depolarizing relaxants — reduce the dose or avoid", alts: ["sensitive to non depolarizing", "reduce the dose", "avoid relaxants", "small dose of non depolarizer"], critical: true },
+          { text: "They are relatively resistant to succinylcholine", alts: ["resistant to succinylcholine", "resistant to sux", "higher dose of succinylcholine"] },
+          { text: "Use short-acting agents and monitor the train-of-four", alts: ["short acting", "monitor twitches", "train of four", "tof", "neuromuscular monitoring"], critical: true },
+          { text: "Consider intubation without paralysis (deep volatile/propofol)", alts: ["intubate without paralysis", "no paralytic", "deep anesthesia to intubate"] },
+        ],
+      },
+      {
+        title: "Perioperative plan",
+        prompt: "What else do you anticipate?",
+        phrases: [
+          { text: "Continue pyridostigmine and discuss steroids", alts: ["pyridostigmine", "continue anticholinesterase", "steroids", "continue medications"] },
+          { text: "Anticipate the need for postoperative ventilation", alts: ["postoperative ventilation", "may need to stay intubated", "icu", "respiratory failure"], critical: true },
+          { text: "Distinguish myasthenic from cholinergic crisis", alts: ["myasthenic crisis", "cholinergic crisis", "tensilon test", "edrophonium"] },
+        ],
+      },
+    ],
+  },
+
+  /* ---------------------------------------------------------------- */
+  {
+    slug: "latex-anaphylaxis",
+    number: 37,
+    category: "Crisis",
+    title: "Latex Allergy / Anaphylaxis",
+    tagline: "Delayed-onset intraoperative anaphylaxis from latex exposure.",
+    icon: "Siren",
+    color: "from-rose-500 to-red-500",
+    stem: "About 30 minutes into a case in a patient with spina bifida, the patient becomes hypotensive with bronchospasm and urticaria — well after drug administration.",
+    sections: [
+      {
+        title: "Recognize & treat",
+        prompt: "What is your diagnosis and management?",
+        phrases: [
+          { text: "Suspect latex anaphylaxis (delayed onset, high-risk patient)", alts: ["latex anaphylaxis", "latex allergy", "anaphylaxis"], critical: true },
+          { text: "Remove the latex source", alts: ["remove latex", "remove the source", "stop latex exposure"], critical: true },
+          { ...SAFETY.callHelp },
+          { text: "Give epinephrine and fluids", alts: ["epinephrine", "epi", "fluids", "fluid bolus"], critical: true },
+          { ...SAFETY.oxygen },
+        ],
+      },
+      {
+        title: "Prevent it",
+        prompt: "How would you have prevented this?",
+        phrases: [
+          { text: "Identify high-risk patients (spina bifida, multiple surgeries)", alts: ["high risk", "spina bifida", "multiple surgeries", "history of reactions"], critical: true },
+          { text: "Prepare a latex-free environment and schedule first case of the day", alts: ["latex free", "latex free environment", "first case of the day", "remove latex products"], critical: true },
+          { text: "Send tryptase and refer for allergy testing", alts: ["tryptase", "allergy testing", "document the allergy"] },
         ],
       },
     ],

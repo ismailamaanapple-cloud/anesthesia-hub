@@ -45,15 +45,7 @@ export type ScoreResult = {
   criticalMisses: OralKeyPhrase[];
 };
 
-/** Score a transcript against every key phrase in a case. */
-export function scoreCase(c: OralCase, transcript: string): ScoreResult {
-  const t = normalize(transcript);
-  const sections: SectionResult[] = c.sections.map((s) => ({
-    title: s.title,
-    prompt: s.prompt,
-    results: s.phrases.map((phrase) => ({ phrase, hit: phraseSaid(t, phrase) })),
-  }));
-
+function aggregate(sections: SectionResult[]): ScoreResult {
   const all = sections.flatMap((s) => s.results);
   const total = all.length;
   const hit = all.filter((r) => r.hit).length;
@@ -61,7 +53,6 @@ export function scoreCase(c: OralCase, transcript: string): ScoreResult {
   const criticalTotal = crit.length;
   const criticalHit = crit.filter((r) => r.hit).length;
   const criticalMisses = crit.filter((r) => !r.hit).map((r) => r.phrase);
-
   return {
     sections,
     total,
@@ -71,6 +62,35 @@ export function scoreCase(c: OralCase, transcript: string): ScoreResult {
     criticalHit,
     criticalMisses,
   };
+}
+
+/** Score a single transcript against every key phrase in a case. */
+export function scoreCase(c: OralCase, transcript: string): ScoreResult {
+  const t = normalize(transcript);
+  return aggregate(
+    c.sections.map((s) => ({
+      title: s.title,
+      prompt: s.prompt,
+      results: s.phrases.map((phrase) => ({ phrase, hit: phraseSaid(t, phrase) })),
+    }))
+  );
+}
+
+/**
+ * Score phase-by-phase: each section's phrases are matched only against the
+ * answer the candidate gave for that phase (answers[i]).
+ */
+export function scoreByPhase(c: OralCase, answers: string[]): ScoreResult {
+  return aggregate(
+    c.sections.map((s, i) => {
+      const t = normalize(answers[i] ?? "");
+      return {
+        title: s.title,
+        prompt: s.prompt,
+        results: s.phrases.map((phrase) => ({ phrase, hit: phraseSaid(t, phrase) })),
+      };
+    })
+  );
 }
 
 /** Count of all key phrases in a case (for list-page summaries). */

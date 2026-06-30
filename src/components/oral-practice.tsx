@@ -11,9 +11,13 @@ import {
   AlertTriangle,
   Keyboard,
   Sparkles,
+  Volume2,
+  Play,
+  ArrowRight,
+  Eraser,
 } from "lucide-react";
-import type { OralCase, OralCaseSection } from "@/lib/oral-boards";
-import { scoreCase, type ScoreResult } from "@/lib/oral-match";
+import type { OralCase } from "@/lib/oral-boards";
+import { scoreByPhase, type ScoreResult } from "@/lib/oral-match";
 import { useOralProgress } from "@/lib/oral-progress";
 import { Markdown } from "@/components/markdown";
 import { cn } from "@/lib/utils";
@@ -25,96 +29,197 @@ declare global {
   }
 }
 
-type Props = { c: OralCase & { sections: OralCaseSection[] } };
+type Props = { c: OralCase };
 
 export function OralPractice({ c }: Props) {
   const { record, get } = useOralProgress();
-  const [answer, setAnswer] = useState("");
+
+  // phaseIdx: -1 = intro, 0..n-1 = phases, n = results
+  const [phaseIdx, setPhaseIdx] = useState(-1);
+  const [answers, setAnswers] = useState<string[]>(() => c.sections.map(() => ""));
+  const [current, setCurrent] = useState("");
   const [interim, setInterim] = useState("");
   const [listening, setListening] = useState(false);
+  const [micError, setMicError] = useState<string | null>(null);
   const [result, setResult] = useState<ScoreResult | null>(null);
-  const [showPrompts, setShowPrompts] = useState(false);
-  const recRef = useRef<any>(null);
+  const [readAloud, setReadAloud] = useState(true);
 
-  const supported = useMemo(
+  const best = get(c.slug)?.bestPct;
+
+  /* ---------------- speech recognition (iOS-safe) ---------------- */
+  const recSupported = useMemo(
     () =>
       typeof window !== "undefined" &&
       !!(window.SpeechRecognition || window.webkitSpeechRecognition),
     []
   );
+  const wantRef = useRef(false);
+  const recRef = useRef<any>(null);
 
-  const best = get(c.slug)?.bestPct;
-
-  const stop = useCallback(() => {
-    try {
-      recRef.current?.stop();
-    } catch {}
-    setListening(false);
+  // append finalized speech to the active phase's working answer
+  const appendFinal = useCallback((chunk: string) => {
+    setCurrent((prev) => (prev + " " + chunk).replace(/\s+/g, " ").replace(/^\s/, ""));
   }, []);
 
-  const start = useCallback(() => {
-    if (!supported) return;
+  const buildRec = useCallback((): any => {
     const Ctor = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!Ctor) return null;
     const rec = new Ctor();
     rec.continuous = true;
     rec.interimResults = true;
     rec.lang = "en-US";
     rec.onresult = (e: any) => {
-      let finalChunk = "";
-      let interimChunk = "";
+      let f = "";
+      let intr = "";
       for (let i = e.resultIndex; i < e.results.length; i++) {
         const r = e.results[i];
-        if (r.isFinal) finalChunk += r[0].transcript + " ";
-        else interimChunk += r[0].transcript;
+        if (r.isFinal) f += r[0].transcript + " ";
+        else intr += r[0].transcript;
       }
-      if (finalChunk) setAnswer((prev) => (prev + " " + finalChunk).trim() + " ");
-      setInterim(interimChunk);
+      if (f) appendFinal(f);
+      setInterim(intr);
     };
-    rec.onerror = () => setListening(false);
+    rec.onerror = (e: any) => {
+      if (e?.error === "not-allowed" || e?.error === "service-not-allowed") {
+        setMicError(
+          "Microphone access was blocked. Allow the mic in your browser settings — on iPhone, use Safari."
+        );
+        wantRef.current = false;
+        setListening(false);
+      }
+      // 'no-speech' / 'aborted' are transient — onend will restart.
+    };
     rec.onend = () => {
       setInterim("");
-      setListening(false);
+      if (wantRef.current) {
+        // iOS Safari stops after each utterance; restart to keep listening.
+        try {
+          rec.start();
+        } catch {
+          setTimeout(() => {
+            if (!wantRef.current) return;
+            const nr = buildRec();
+            if (nr) {
+              recRef.current = nr;
+              try {
+                nr.start();
+              } catch {}
+            }
+          }, 300);
+        }
+      } else {
+        setListening(false);
+      }
     };
+    return rec;
+  }, [appendFinal]);
+
+  const stopRec = useCallback(() => {
+    wantRef.current = false;
+    try {
+      recRef.current?.stop();
+    } catch {}
+    setListening(false);
+    setInterim("");
+  }, []);
+
+  const startRec = useCallback(() => {
+    if (!recSupported) return;
+    stopSpeak(); // don't capture the examiner voice
+    setMicError(null);
+    wantRef.current = true;
+    const rec = buildRec();
+    if (!rec) return;
     recRef.current = rec;
-    setResult(null);
-    rec.start();
-    setListening(true);
-  }, [supported]);
+    try {
+      rec.start();
+      setListening(true);
+    } catch {
+      // already started — ignore
+      setListening(true);
+    }
+  }, [recSupported, buildRec]);
 
   useEffect(() => {
     return () => {
+      wantRef.current = false;
       try {
         recRef.current?.stop();
       } catch {}
+      stopSpeak();
     };
   }, []);
 
-  const grade = useCallback(() => {
-    stop();
-    const r = scoreCase(c, answer);
-    setResult(r);
-    record({
-      slug: c.slug,
-      pct: r.pct,
-      hit: r.hit,
-      total: r.total,
-      criticalHit: r.criticalHit,
-      criticalTotal: r.criticalTotal,
-      at: new Date().toISOString(),
-    });
-    // smooth-scroll to results
-    setTimeout(() => {
-      document.getElementById("oral-results")?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 60);
-  }, [answer, c, record, stop]);
+  /* ---------------- text to speech (examiner voice) -------------- */
+  const ttsSupported = useMemo(
+    () => typeof window !== "undefined" && "speechSynthesis" in window,
+    []
+  );
+
+  // speak the prompt when entering a phase
+  useEffect(() => {
+    if (!readAloud) return;
+    if (phaseIdx >= 0 && phaseIdx < c.sections.length) {
+      const s = c.sections[phaseIdx];
+      if (s.prompt) speak(s.prompt);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phaseIdx]);
+
+  /* ---------------- flow ---------------- */
+  const begin = useCallback(() => {
+    setAnswers(c.sections.map(() => ""));
+    setCurrent("");
+    setResult(null);
+    setPhaseIdx(0);
+  }, [c.sections]);
+
+  const advance = useCallback(() => {
+    stopRec();
+    stopSpeak();
+    const next = [...answers];
+    next[phaseIdx] = current;
+    setAnswers(next);
+    setCurrent("");
+    setInterim("");
+
+    if (phaseIdx + 1 >= c.sections.length) {
+      const r = scoreByPhase(c, next);
+      setResult(r);
+      record({
+        slug: c.slug,
+        pct: r.pct,
+        hit: r.hit,
+        total: r.total,
+        criticalHit: r.criticalHit,
+        criticalTotal: r.criticalTotal,
+        at: new Date().toISOString(),
+      });
+      setPhaseIdx(c.sections.length);
+      setTimeout(
+        () => document.getElementById("oral-results")?.scrollIntoView({ behavior: "smooth", block: "start" }),
+        60
+      );
+    } else {
+      setPhaseIdx(phaseIdx + 1);
+    }
+  }, [answers, c, current, phaseIdx, record, stopRec]);
 
   const reset = useCallback(() => {
-    stop();
-    setAnswer("");
+    stopRec();
+    stopSpeak();
+    setAnswers(c.sections.map(() => ""));
+    setCurrent("");
     setInterim("");
     setResult(null);
-  }, [stop]);
+    setPhaseIdx(-1);
+  }, [c.sections, stopRec]);
 
+  const isIntro = phaseIdx === -1;
+  const isResults = phaseIdx >= c.sections.length;
+  const phase = !isIntro && !isResults ? c.sections[phaseIdx] : null;
+
+  /* ---------------- render ---------------- */
   return (
     <div>
       {/* Stem */}
@@ -123,6 +228,14 @@ export function OralPractice({ c }: Props) {
           <span className="text-[10px] uppercase tracking-wider font-semibold text-primary">
             The case
           </span>
+          {ttsSupported && (
+            <button
+              onClick={() => speak(c.stem)}
+              className="inline-flex items-center gap-1 text-[11px] text-primary hover:underline"
+            >
+              <Volume2 className="h-3.5 w-3.5" /> Read aloud
+            </button>
+          )}
           {best != null && (
             <span className="ml-auto text-[11px] text-muted-foreground">
               Best: <span className="font-semibold text-foreground">{best}%</span>
@@ -130,89 +243,153 @@ export function OralPractice({ c }: Props) {
           )}
         </div>
         <Markdown text={c.stem} />
-        <button
-          onClick={() => setShowPrompts((s) => !s)}
-          className="mt-4 text-xs text-primary font-medium hover:underline"
-        >
-          {showPrompts ? "Hide" : "Show"} examiner prompts ({c.sections.length} phases)
-        </button>
-        {showPrompts && (
-          <ol className="mt-3 space-y-1.5 text-sm text-muted-foreground list-decimal pl-5">
-            {c.sections.map((s, i) => (
-              <li key={i}>
-                <span className="font-medium text-foreground">{s.title}</span>
-                {s.prompt ? <> — {s.prompt}</> : null}
-              </li>
-            ))}
-          </ol>
-        )}
       </section>
 
-      {/* Recorder */}
-      <section className="mt-6 rounded-2xl border border-border bg-card p-5 sm:p-7">
-        <div className="flex items-center gap-2 mb-4">
-          <Mic className="h-4 w-4 text-primary" />
-          <h2 className="text-sm font-semibold uppercase tracking-wider text-primary">
-            Your answer
+      {/* Intro */}
+      {isIntro && (
+        <section className="mt-6 rounded-2xl border border-border bg-card p-5 sm:p-7">
+          <h2 className="text-lg font-semibold tracking-tight">
+            {c.sections.length}-phase oral exam
           </h2>
-        </div>
+          <p className="mt-1 text-sm text-muted-foreground">
+            The examiner will give you one prompt at a time. Answer each out loud,
+            then continue. We&apos;ll score the key phrases you said at the end.
+          </p>
+          {ttsSupported && (
+            <label className="mt-4 flex items-center gap-2 text-sm text-muted-foreground cursor-pointer select-none">
+              <input
+                type="checkbox"
+                checked={readAloud}
+                onChange={(e) => setReadAloud(e.target.checked)}
+                className="h-4 w-4 accent-primary"
+              />
+              Examiner reads each prompt aloud
+            </label>
+          )}
+          {!recSupported && (
+            <div className="mt-4 text-xs text-warning bg-warning/10 border border-warning/30 rounded-lg px-3 py-2 inline-flex items-center gap-2">
+              <Keyboard className="h-3.5 w-3.5" />
+              Voice input needs Safari (iPhone) or Chrome/Edge — you can type your answers instead.
+            </div>
+          )}
+          <button
+            onClick={begin}
+            className="mt-5 inline-flex items-center gap-2 h-11 px-5 rounded-xl bg-gradient-to-br from-primary to-accent text-white text-sm font-semibold hover:opacity-90 transition-opacity"
+          >
+            <Play className="h-4 w-4" /> Start oral exam
+          </button>
+        </section>
+      )}
 
-        {supported ? (
-          <div className="flex flex-col items-center gap-3">
-            <button
-              onClick={listening ? stop : start}
-              className={cn(
-                "relative inline-flex h-20 w-20 items-center justify-center rounded-full text-white shadow-lg transition-transform active:scale-95",
-                listening
-                  ? "bg-destructive pulse-dot"
-                  : "bg-gradient-to-br from-primary to-accent"
-              )}
-              aria-label={listening ? "Stop recording" : "Start recording"}
-            >
-              {listening ? <Square className="h-7 w-7" /> : <Mic className="h-8 w-8" />}
-            </button>
-            <p className="text-xs text-muted-foreground">
-              {listening ? "Listening… answer the case out loud, then stop." : "Tap to start speaking your answer."}
+      {/* Active phase */}
+      {phase && (
+        <section className="mt-6 rounded-2xl border border-border bg-card p-5 sm:p-7">
+          {/* progress */}
+          <div className="flex items-center gap-1.5 mb-4">
+            {c.sections.map((_, i) => (
+              <span
+                key={i}
+                className={cn(
+                  "h-1.5 rounded-full transition-all",
+                  i < phaseIdx ? "w-6 bg-primary" : i === phaseIdx ? "w-10 bg-primary" : "w-6 bg-border"
+                )}
+              />
+            ))}
+          </div>
+
+          <div className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">
+            Phase {phaseIdx + 1} of {c.sections.length} · {phase.title}
+          </div>
+
+          <div className="mt-2 flex items-start gap-2">
+            <p className="text-base sm:text-lg font-medium leading-snug flex-1">
+              {phase.prompt ?? phase.title}
+            </p>
+            {ttsSupported && phase.prompt && (
+              <button
+                onClick={() => speak(phase.prompt!)}
+                aria-label="Read prompt aloud"
+                className="shrink-0 h-9 w-9 grid place-items-center rounded-lg border border-border text-primary hover:bg-muted transition-colors"
+              >
+                <Volume2 className="h-4 w-4" />
+              </button>
+            )}
+          </div>
+
+          {/* recorder */}
+          <div className="mt-5 flex flex-col items-center gap-3">
+            {recSupported && (
+              <button
+                onClick={listening ? stopRec : startRec}
+                className={cn(
+                  "relative inline-flex h-16 w-16 items-center justify-center rounded-full text-white shadow-lg transition-transform active:scale-95",
+                  listening ? "bg-destructive pulse-dot" : "bg-gradient-to-br from-primary to-accent"
+                )}
+                aria-label={listening ? "Stop recording" : "Start recording"}
+              >
+                {listening ? <Square className="h-6 w-6" /> : <Mic className="h-7 w-7" />}
+              </button>
+            )}
+            <p className="text-xs text-muted-foreground text-center">
+              {listening
+                ? "Listening… speak your answer, then tap to stop."
+                : recSupported
+                ? "Tap the mic and answer this phase out loud."
+                : "Type your answer below."}
             </p>
           </div>
-        ) : (
-          <div className="text-xs text-warning bg-warning/10 border border-warning/30 rounded-lg px-3 py-2 mb-3 inline-flex items-center gap-2">
-            <Keyboard className="h-3.5 w-3.5" />
-            Voice capture needs Chrome, Edge, or Safari — type your answer below instead.
+
+          {micError && (
+            <div className="mt-3 text-xs text-destructive bg-destructive/10 border border-destructive/30 rounded-lg px-3 py-2">
+              {micError}
+            </div>
+          )}
+          {interim && <p className="mt-3 text-sm text-muted-foreground italic">{interim}…</p>}
+
+          <textarea
+            value={current}
+            onChange={(e) => setCurrent(e.target.value)}
+            placeholder="Your answer for this phase…"
+            rows={4}
+            className="mt-4 w-full rounded-xl border border-border bg-background p-3 text-sm leading-relaxed outline-none focus:border-primary transition-colors resize-y"
+          />
+
+          <div className="mt-4 flex flex-wrap gap-2">
+            <button
+              onClick={advance}
+              className="inline-flex items-center gap-2 h-10 px-4 rounded-xl bg-foreground text-background text-sm font-semibold hover:opacity-90 transition-opacity"
+            >
+              {phaseIdx + 1 >= c.sections.length ? (
+                <>
+                  <Sparkles className="h-4 w-4" /> Finish & score
+                </>
+              ) : (
+                <>
+                  Next phase <ArrowRight className="h-4 w-4" />
+                </>
+              )}
+            </button>
+            <button
+              onClick={() => {
+                setCurrent("");
+                setInterim("");
+              }}
+              className="inline-flex items-center gap-2 h-10 px-4 rounded-xl border border-border text-sm font-medium hover:bg-muted transition-colors"
+            >
+              <Eraser className="h-4 w-4" /> Clear
+            </button>
+            <button
+              onClick={reset}
+              className="inline-flex items-center gap-2 h-10 px-3 rounded-xl text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <RotateCcw className="h-4 w-4" /> Restart
+            </button>
           </div>
-        )}
-
-        {interim && (
-          <p className="mt-3 text-sm text-muted-foreground italic">{interim}…</p>
-        )}
-
-        <textarea
-          value={answer}
-          onChange={(e) => setAnswer(e.target.value)}
-          placeholder="Your transcribed answer appears here — or type/edit it directly…"
-          rows={5}
-          className="mt-4 w-full rounded-xl border border-border bg-background p-3 text-sm leading-relaxed outline-none focus:border-primary transition-colors resize-y"
-        />
-
-        <div className="mt-4 flex flex-wrap gap-2">
-          <button
-            onClick={grade}
-            disabled={!answer.trim()}
-            className="inline-flex items-center gap-2 h-10 px-4 rounded-xl bg-foreground text-background text-sm font-semibold hover:opacity-90 disabled:opacity-40 transition-opacity"
-          >
-            <Sparkles className="h-4 w-4" /> Score my answer
-          </button>
-          <button
-            onClick={reset}
-            className="inline-flex items-center gap-2 h-10 px-4 rounded-xl border border-border text-sm font-medium hover:bg-muted transition-colors"
-          >
-            <RotateCcw className="h-4 w-4" /> Reset
-          </button>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Results */}
-      {result && (
+      {isResults && result && (
         <section id="oral-results" className="mt-6 scroll-mt-24">
           <div className="rounded-2xl border border-border bg-card p-5 sm:p-7">
             <div className="flex items-center gap-4">
@@ -230,9 +407,7 @@ export function OralPractice({ c }: Props) {
                   <span
                     className={cn(
                       "font-semibold",
-                      result.criticalHit === result.criticalTotal
-                        ? "text-success"
-                        : "text-destructive"
+                      result.criticalHit === result.criticalTotal ? "text-success" : "text-destructive"
                     )}
                   >
                     {result.criticalHit}/{result.criticalTotal}
@@ -261,14 +436,14 @@ export function OralPractice({ c }: Props) {
             )}
           </div>
 
-          {/* Per-section checklist */}
+          {/* Per-phase checklist + what you said */}
           <div className="mt-4 space-y-4">
             {result.sections.map((s, i) => (
               <div key={i} className="rounded-2xl border border-border bg-card p-5">
-                <h3 className="font-semibold tracking-tight mb-1">{s.title}</h3>
-                {s.prompt && (
-                  <p className="text-xs text-muted-foreground mb-3 italic">{s.prompt}</p>
-                )}
+                <h3 className="font-semibold tracking-tight mb-1">
+                  Phase {i + 1} · {s.title}
+                </h3>
+                {s.prompt && <p className="text-xs text-muted-foreground mb-3 italic">{s.prompt}</p>}
                 <ul className="space-y-2">
                   {s.results.map((r, j) => (
                     <li key={j} className="flex items-start gap-2.5 text-sm">
@@ -294,6 +469,11 @@ export function OralPractice({ c }: Props) {
                     </li>
                   ))}
                 </ul>
+                {answers[i]?.trim() && (
+                  <p className="mt-3 text-xs text-muted-foreground border-l-2 border-border pl-3">
+                    <span className="font-medium">You said:</span> {answers[i].trim()}
+                  </p>
+                )}
               </div>
             ))}
           </div>
@@ -312,12 +492,30 @@ export function OralPractice({ c }: Props) {
   );
 }
 
+/* ---------------- helpers ---------------- */
+function speak(text: string) {
+  if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
+  try {
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.rate = 0.98;
+    u.pitch = 1;
+    window.speechSynthesis.speak(u);
+  } catch {}
+}
+function stopSpeak() {
+  try {
+    if (typeof window !== "undefined" && "speechSynthesis" in window) {
+      window.speechSynthesis.cancel();
+    }
+  } catch {}
+}
+
 function ScoreRing({ pct }: { pct: number }) {
   const r = 26;
   const circ = 2 * Math.PI * r;
   const off = circ - (pct / 100) * circ;
-  const color =
-    pct >= 80 ? "text-success" : pct >= 50 ? "text-warning" : "text-destructive";
+  const color = pct >= 80 ? "text-success" : pct >= 50 ? "text-warning" : "text-destructive";
   return (
     <div className="relative h-20 w-20 shrink-0">
       <svg viewBox="0 0 64 64" className="h-20 w-20 -rotate-90">
