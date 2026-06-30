@@ -156,7 +156,6 @@ export function OralPractice({ c }: Props) {
     []
   );
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
-  const [voiceURI, setVoiceURI] = useState("");
   const voiceRef = useRef<SpeechSynthesisVoice | null>(null);
 
   useEffect(() => {
@@ -171,19 +170,14 @@ export function OralPractice({ c }: Props) {
     };
   }, [ttsSupported]);
 
-  const enVoices = useMemo(() => voices.filter((v) => /^en[-_]?/i.test(v.lang)), [voices]);
-  const bestVoice = useMemo(() => pickBestVoice(enVoices), [enVoices]);
-
+  // Examiner voice: Karen (Australian English) when available, else a sensible fallback.
+  const bestVoice = useMemo(
+    () => pickBestVoice(voices.filter((v) => /^en[-_]?/i.test(v.lang))),
+    [voices]
+  );
   useEffect(() => {
-    if (!enVoices.length) return;
-    const saved = typeof window !== "undefined" ? localStorage.getItem("ah-oral-voice") : null;
-    const chosen = (saved && enVoices.find((v) => v.voiceURI === saved)) || bestVoice;
-    if (chosen) setVoiceURI(chosen.voiceURI);
-  }, [enVoices, bestVoice]);
-
-  useEffect(() => {
-    voiceRef.current = enVoices.find((v) => v.voiceURI === voiceURI) || bestVoice || null;
-  }, [voiceURI, enVoices, bestVoice]);
+    voiceRef.current = bestVoice;
+  }, [bestVoice]);
 
   const utter = useCallback((text: string) => {
     const u = new SpeechSynthesisUtterance(text);
@@ -217,19 +211,6 @@ export function OralPractice({ c }: Props) {
       } catch {}
     },
     [ttsSupported, utter]
-  );
-
-  const chooseVoice = useCallback(
-    (uri: string) => {
-      setVoiceURI(uri);
-      try {
-        localStorage.setItem("ah-oral-voice", uri);
-      } catch {}
-      const v = enVoices.find((x) => x.voiceURI === uri) || null;
-      voiceRef.current = v;
-      speak("Hello, I'll be your examiner today.");
-    },
-    [enVoices, speak]
   );
 
   /* ---------------- flow ---------------- */
@@ -336,38 +317,6 @@ export function OralPractice({ c }: Props) {
               Examiner reads the case &amp; prompts aloud
             </label>
           )}
-          {ttsSupported && enVoices.length > 1 && (
-            <div className="mt-3">
-              <label className="block text-xs text-muted-foreground mb-1">Examiner voice</label>
-              <div className="flex items-center gap-2">
-                <select
-                  value={voiceURI}
-                  onChange={(e) => chooseVoice(e.target.value)}
-                  className="h-9 max-w-full rounded-lg border border-border bg-background px-2 text-sm outline-none focus:border-primary"
-                >
-                  {enVoices.map((v) => (
-                    <option key={v.voiceURI} value={v.voiceURI}>
-                      {v.name}
-                      {/(enhanced|premium|natural|neural|siri)/i.test(v.name) ? " ✨" : ""}
-                    </option>
-                  ))}
-                </select>
-                <button
-                  type="button"
-                  onClick={() => speak("Hello, I'll be your examiner today.")}
-                  className="inline-flex items-center gap-1.5 h-9 px-3 rounded-lg border border-border text-xs font-medium hover:bg-muted transition-colors"
-                >
-                  <Volume2 className="h-3.5 w-3.5" /> Preview
-                </button>
-              </div>
-              <p className="mt-1.5 text-[11px] text-muted-foreground">
-                Tip: for a more human voice on iPhone, install an{" "}
-                <span className="font-medium">Enhanced</span> or{" "}
-                <span className="font-medium">Premium</span> English voice in Settings →
-                Accessibility → Spoken Content → Voices, then pick it here (✨).
-              </p>
-            </div>
-          )}
           {!recSupported && (
             <div className="mt-4 text-xs text-warning bg-warning/10 border border-warning/30 rounded-lg px-3 py-2 inline-flex items-center gap-2">
               <Keyboard className="h-3.5 w-3.5" />
@@ -455,6 +404,9 @@ export function OralPractice({ c }: Props) {
             rows={4}
             className="mt-4 w-full rounded-xl border border-border bg-background p-3 text-sm leading-relaxed outline-none focus:border-primary transition-colors resize-y"
           />
+          <p className="mt-1.5 text-[11px] text-muted-foreground">
+            Answer naturally — wording and word order don&apos;t have to be exact; we match on the key ideas.
+          </p>
 
           <div className="mt-4 flex flex-wrap gap-2">
             <button
@@ -497,6 +449,14 @@ export function OralPractice({ c }: Props) {
             <div className="flex items-center gap-4">
               <ScoreRing pct={result.pct} />
               <div>
+                <div
+                  className={cn(
+                    "text-base font-semibold",
+                    result.pct >= 80 ? "text-success" : result.pct >= 50 ? "text-warning" : "text-destructive"
+                  )}
+                >
+                  {result.pct >= 80 ? "Strong pass" : result.pct >= 50 ? "Borderline" : "Needs work"}
+                </div>
                 <div className="text-sm text-muted-foreground">
                   You said{" "}
                   <span className="font-semibold text-foreground">
@@ -595,10 +555,13 @@ export function OralPractice({ c }: Props) {
 }
 
 /* ---------------- helpers ---------------- */
+// Examiner voice preference — Karen first, then graceful fallbacks for devices
+// that don't have her installed.
 const VOICE_PREF = [
-  "samantha", "ava", "allison", "serena", "aria", "jenny", "emma", "michelle",
+  "karen",
+  "samantha", "ava", "allison", "serena", "aria", "jenny",
   "google us english", "google uk english female",
-  "natural", "neural", "enhanced", "premium", "siri", "daniel", "tom", "alex",
+  "natural", "neural", "enhanced", "premium", "siri", "alex", "daniel",
 ];
 function pickBestVoice(list: SpeechSynthesisVoice[]): SpeechSynthesisVoice | null {
   if (!list.length) return null;
