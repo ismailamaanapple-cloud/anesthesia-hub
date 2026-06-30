@@ -155,16 +155,82 @@ export function OralPractice({ c }: Props) {
     () => typeof window !== "undefined" && "speechSynthesis" in window,
     []
   );
+  const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
+  const [voiceURI, setVoiceURI] = useState("");
+  const voiceRef = useRef<SpeechSynthesisVoice | null>(null);
 
-  // speak the prompt when entering a phase
   useEffect(() => {
-    if (!readAloud) return;
-    if (phaseIdx >= 0 && phaseIdx < c.sections.length) {
-      const s = c.sections[phaseIdx];
-      if (s.prompt) speak(s.prompt);
+    if (!ttsSupported) return;
+    const load = () => setVoices(window.speechSynthesis.getVoices());
+    load();
+    window.speechSynthesis.addEventListener?.("voiceschanged", load);
+    return () => {
+      try {
+        window.speechSynthesis.removeEventListener?.("voiceschanged", load);
+      } catch {}
+    };
+  }, [ttsSupported]);
+
+  const enVoices = useMemo(() => voices.filter((v) => /^en[-_]?/i.test(v.lang)), [voices]);
+  const bestVoice = useMemo(() => pickBestVoice(enVoices), [enVoices]);
+
+  useEffect(() => {
+    if (!enVoices.length) return;
+    const saved = typeof window !== "undefined" ? localStorage.getItem("ah-oral-voice") : null;
+    const chosen = (saved && enVoices.find((v) => v.voiceURI === saved)) || bestVoice;
+    if (chosen) setVoiceURI(chosen.voiceURI);
+  }, [enVoices, bestVoice]);
+
+  useEffect(() => {
+    voiceRef.current = enVoices.find((v) => v.voiceURI === voiceURI) || bestVoice || null;
+  }, [voiceURI, enVoices, bestVoice]);
+
+  const utter = useCallback((text: string) => {
+    const u = new SpeechSynthesisUtterance(text);
+    if (voiceRef.current) {
+      u.voice = voiceRef.current;
+      u.lang = voiceRef.current.lang;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [phaseIdx]);
+    u.rate = 0.95;
+    u.pitch = 1.02;
+    return u;
+  }, []);
+
+  const speak = useCallback(
+    (text: string) => {
+      if (!ttsSupported || !text) return;
+      try {
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(utter(text));
+      } catch {}
+    },
+    [ttsSupported, utter]
+  );
+
+  // read several segments back-to-back (e.g., the case stem, then the prompt)
+  const speakMany = useCallback(
+    (texts: string[]) => {
+      if (!ttsSupported) return;
+      try {
+        window.speechSynthesis.cancel();
+        texts.filter(Boolean).forEach((t) => window.speechSynthesis.speak(utter(t)));
+      } catch {}
+    },
+    [ttsSupported, utter]
+  );
+
+  const chooseVoice = useCallback(
+    (uri: string) => {
+      setVoiceURI(uri);
+      try {
+        localStorage.setItem("ah-oral-voice", uri);
+      } catch {}
+      const v = enVoices.find((x) => x.voiceURI === uri) || null;
+      voiceRef.current = v;
+      speak("Hello, I'll be your examiner today.");
+    },
+    [enVoices, speak]
+  );
 
   /* ---------------- flow ---------------- */
   const begin = useCallback(() => {
@@ -172,7 +238,9 @@ export function OralPractice({ c }: Props) {
     setCurrent("");
     setResult(null);
     setPhaseIdx(0);
-  }, [c.sections]);
+    // examiner reads the case, then the first prompt
+    if (readAloud) speakMany([c.stem, c.sections[0]?.prompt ?? ""]);
+  }, [c.sections, c.stem, readAloud, speakMany]);
 
   const advance = useCallback(() => {
     stopRec();
@@ -201,9 +269,11 @@ export function OralPractice({ c }: Props) {
         60
       );
     } else {
-      setPhaseIdx(phaseIdx + 1);
+      const ni = phaseIdx + 1;
+      setPhaseIdx(ni);
+      if (readAloud) speakMany([c.sections[ni]?.prompt ?? ""]);
     }
-  }, [answers, c, current, phaseIdx, record, stopRec]);
+  }, [answers, c, current, phaseIdx, readAloud, record, speakMany, stopRec]);
 
   const reset = useCallback(() => {
     stopRec();
@@ -263,8 +333,40 @@ export function OralPractice({ c }: Props) {
                 onChange={(e) => setReadAloud(e.target.checked)}
                 className="h-4 w-4 accent-primary"
               />
-              Examiner reads each prompt aloud
+              Examiner reads the case &amp; prompts aloud
             </label>
+          )}
+          {ttsSupported && enVoices.length > 1 && (
+            <div className="mt-3">
+              <label className="block text-xs text-muted-foreground mb-1">Examiner voice</label>
+              <div className="flex items-center gap-2">
+                <select
+                  value={voiceURI}
+                  onChange={(e) => chooseVoice(e.target.value)}
+                  className="h-9 max-w-full rounded-lg border border-border bg-background px-2 text-sm outline-none focus:border-primary"
+                >
+                  {enVoices.map((v) => (
+                    <option key={v.voiceURI} value={v.voiceURI}>
+                      {v.name}
+                      {/(enhanced|premium|natural|neural|siri)/i.test(v.name) ? " ✨" : ""}
+                    </option>
+                  ))}
+                </select>
+                <button
+                  type="button"
+                  onClick={() => speak("Hello, I'll be your examiner today.")}
+                  className="inline-flex items-center gap-1.5 h-9 px-3 rounded-lg border border-border text-xs font-medium hover:bg-muted transition-colors"
+                >
+                  <Volume2 className="h-3.5 w-3.5" /> Preview
+                </button>
+              </div>
+              <p className="mt-1.5 text-[11px] text-muted-foreground">
+                Tip: for a more human voice on iPhone, install an{" "}
+                <span className="font-medium">Enhanced</span> or{" "}
+                <span className="font-medium">Premium</span> English voice in Settings →
+                Accessibility → Spoken Content → Voices, then pick it here (✨).
+              </p>
+            </div>
           )}
           {!recSupported && (
             <div className="mt-4 text-xs text-warning bg-warning/10 border border-warning/30 rounded-lg px-3 py-2 inline-flex items-center gap-2">
@@ -493,15 +595,18 @@ export function OralPractice({ c }: Props) {
 }
 
 /* ---------------- helpers ---------------- */
-function speak(text: string) {
-  if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
-  try {
-    window.speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(text);
-    u.rate = 0.98;
-    u.pitch = 1;
-    window.speechSynthesis.speak(u);
-  } catch {}
+const VOICE_PREF = [
+  "samantha", "ava", "allison", "serena", "aria", "jenny", "emma", "michelle",
+  "google us english", "google uk english female",
+  "natural", "neural", "enhanced", "premium", "siri", "daniel", "tom", "alex",
+];
+function pickBestVoice(list: SpeechSynthesisVoice[]): SpeechSynthesisVoice | null {
+  if (!list.length) return null;
+  for (const term of VOICE_PREF) {
+    const v = list.find((x) => x.name.toLowerCase().includes(term));
+    if (v) return v;
+  }
+  return list.find((x) => /en[-_]us/i.test(x.lang)) || list[0];
 }
 function stopSpeak() {
   try {
